@@ -1,15 +1,15 @@
 import React from 'react';
+import { Outlet } from 'react-router-dom';
+import Aside from './components/Aside';
+import Main from './components/Main';
 
 const App = () => {
   return (
-    <div className="flex justify-center items-center w-full bg-slate-200 h-screen">
-      <div>
-        <p>
-          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Possimus ab asperiores dolorem! Vitae quae
-          exercitationem ea voluptatibus, dolore beatae. Itaque, quam nobis? Molestias aspernatur porro harum sunt
-          placeat perspiciatis optio?
-        </p>
-      </div>
+    <div className="bg-blue-50 h-full w-screen flex flex-row">
+      <Aside />
+      <Main>
+        <Outlet />
+      </Main>
     </div>
   );
 };
