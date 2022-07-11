@@ -1,20 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { Link, Outlet } from 'react-router-dom';
-import fetchData from '../hooks';
+import { Link } from 'react-router-dom';
+import { fetchData, postData } from '../hooks';
 import Spinner from '../Spinner';
-
-export interface Supplier {
-  '@id': string;
-  '@type': string;
-  books?: string[];
-  contactName: string;
-  id: number;
-}
+import { ISupplier } from './interfaces';
 
 const Suppliers = () => {
   const [suppliers, setSuppliers] = useState({ loading: true, data: null });
   useEffect(() => {
-    fetchData('suppliers', setSuppliers);
+    fetchData('/api/suppliers', setSuppliers);
   }, []);
   const { loading, data } = suppliers;
 
@@ -68,23 +61,29 @@ const Suppliers = () => {
                     </thead>
                     <tbody>
                       {data &&
-                        (data['hydra:member'] as Supplier[]).map((sup: Supplier) => {
+                        (data['hydra:member'] as ISupplier[]).map((sup: ISupplier) => {
                           return (
                             <tr key={sup.id}>
                               <td className="px-2 py-2">{sup.id}</td>
                               <td className="px-2 py-2">{sup.contactName}</td>
-                              <td className="flex justify-around px-6 py-4 whitespace-nowrap  text-sm font-medium">
+                              <td className="grid grid-cols-2 items-center px-6 py-4 whitespace-nowrap  text-sm font-medium">
                                 <Link className="text-blue-500 hover:text-blue-700" to={`${sup.id}`}>
                                   edit
                                 </Link>{' '}
-                                <span className="text-red-500 hover:text-red-700 cursor:pointer">Delete</span>
+                                {sup.books.length > 0 || (
+                                  <button
+                                    onClick={() => postData('delete', `/api/suppliers/${sup.id}`)}
+                                    className="text-red-500 hover:text-red-700 cursor:pointer"
+                                  >
+                                    Delete
+                                  </button>
+                                )}
                               </td>
                             </tr>
                           );
                         })}
                     </tbody>
                   </table>
-                  <Outlet />
                 </div>
               </div>
             </div>

@@ -6,7 +6,7 @@ import Suppliers from './components/suppliers/Suppliers';
 import App from './App';
 import Home from './pages/home';
 import NewSupplier from './components/suppliers/NewSupplier';
-import Supplier from './components/suppliers/Supplier';
+import EditSupplier from './components/suppliers/EditSupplier';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -16,7 +16,7 @@ ReactDOM.render(
         <Route path="admin" element={<App />}>
           <Route path="suppliers" element={<Suppliers />} />
           <Route path="suppliers/new" element={<NewSupplier />} />
-          <Route path="suppliers/:id" element={<Supplier />} />
+          <Route path="suppliers/:id" element={<EditSupplier />} />
         </Route>
       </Routes>
     </HashRouter>
