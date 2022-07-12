@@ -1,15 +1,30 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { fetchData, postData } from '../hooks';
+import Modal from '../modal';
 import Spinner from '../Spinner';
 import { ISupplier } from './interfaces';
 
 const Suppliers = () => {
   const [suppliers, setSuppliers] = useState({ loading: true, data: null });
+  const [supplier, setSupplier] = useState<string | null>(null);
+  const [confirmed, setConfirmed] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+
   useEffect(() => {
-    fetchData('/api/suppliers', setSuppliers);
-  }, []);
+    if (supplier && confirmed) {
+      postData('delete', supplier).then(() => fetchData('/api/suppliers', setSuppliers));
+      setConfirmed(false);
+      console.log('deleted');
+    } else {
+      fetchData('/api/suppliers', setSuppliers);
+    }
+  }, [supplier, confirmed]);
+
   const { loading, data } = suppliers;
+  console.log('supplier', supplier);
+
+  console.log('confirmed', confirmed);
 
   if (loading) {
     return <Spinner />;
@@ -72,7 +87,10 @@ const Suppliers = () => {
                                 </Link>{' '}
                                 {sup.books.length > 0 || (
                                   <button
-                                    onClick={() => postData('delete', `/api/suppliers/${sup.id}`)}
+                                    onClick={() => {
+                                      setShowModal(true);
+                                      setSupplier(sup['@id']);
+                                    }}
                                     className="text-red-500 hover:text-red-700 cursor:pointer"
                                   >
                                     Delete
@@ -90,6 +108,7 @@ const Suppliers = () => {
           </div>
         </div>
       </div>
+      <Modal setConfirmed={setConfirmed} method="Delete" setShowModal={setShowModal} showModal={showModal} />
     </div>
   );
 };

@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { AxiosResponse } from 'axios';
 import { postData } from '../hooks';
 import { IFormInputs, ISupplier } from './interfaces';
+import Modal from '../modal';
 
 interface Evalidation {
   code: string;
@@ -11,8 +12,15 @@ interface Evalidation {
   propertyPath: string;
 }
 
-const SupplierForm = ({ supplier, method }: { supplier?: ISupplier; method: string }) => {
+interface Props {
+  supplier?: ISupplier;
+  method: string;
+}
+
+const SupplierForm = ({ supplier, method }: Props) => {
   const [postStatus, setPostStatus] = useState<AxiosResponse | undefined>(undefined);
+  const [confirmed, setConfirmed] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   const [errApiMessages, setErrApiMessages] = useState<Evalidation[] | null>(null);
 
@@ -23,7 +31,9 @@ const SupplierForm = ({ supplier, method }: { supplier?: ISupplier; method: stri
   } = useForm<IFormInputs>();
 
   const onSubmit = (data: IFormInputs) => {
-    postData(method, supplier ? supplier['@id'] : `/api/suppliers`, data, setPostStatus);
+    if (confirmed) {
+      postData(method, supplier ? supplier['@id'] : `/api/suppliers`, data, setPostStatus);
+    }
   };
   useEffect(() => {
     if (typeof postStatus !== 'undefined' && postStatus.status === 422) {
@@ -56,7 +66,10 @@ const SupplierForm = ({ supplier, method }: { supplier?: ISupplier; method: stri
             </label>
           </div>
           <div className="w-full grid grid-cols-2 gap-3 ">
-            <button className="uppercase inline-block rounded-md bg-green-500 px-6 py-2 font-semibold text-white shadow-md duration-75 hover:bg-green-400 w-full">
+            <button
+              onClick={() => setShowModal(true)}
+              className="uppercase inline-block rounded-md bg-green-500 px-6 py-2 font-semibold text-white shadow-md duration-75 hover:bg-green-400 w-full"
+            >
               Register
             </button>
             <Link
@@ -69,6 +82,7 @@ const SupplierForm = ({ supplier, method }: { supplier?: ISupplier; method: stri
           </div>
         </form>
       </div>
+      <Modal method={method} setConfirmed={setConfirmed} setShowModal={setShowModal} showModal={showModal} />
     </div>
   );
 };

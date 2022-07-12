@@ -13,8 +13,9 @@ export const fetchData = async (url: string, callback: (value: any) => void) => 
   }
 };
 
-export const postData = async (method: string, url: string, data?: object, callback?: any) => {
+// postData function used for the posting data operations : post,delete,put
+export const postData = async (method: string, url: string, data?: object, callback?: (value: any) => void) => {
   return axios({ method, url, baseURL: baseUrl, data })
-    .then((res) => callback(res))
-    .catch((err) => callback(err.response as AxiosResponse));
+    .then((res) => (callback ? callback(res) : console.log(res)))
+    .catch((err) => (callback ? callback(err.response as AxiosResponse) : console.log(err)));
 };
