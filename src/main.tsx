@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import { HashRouter, Routes, Route } from 'react-router-dom';
 import Suppliers from './components/suppliers/Suppliers';
-import App from './App';
+import App from './pages/App';
 import Home from './pages/home';
 import NewSupplier from './components/suppliers/NewSupplier';
 import EditSupplier from './components/suppliers/EditSupplier';

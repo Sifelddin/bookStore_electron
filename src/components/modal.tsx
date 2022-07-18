@@ -1,13 +1,14 @@
 import React from 'react';
+import { useConfirmation, useModal } from '../contexts/ConfirmContext';
 
 interface Props {
-  setConfirmed: (bool: boolean) => void;
   method: string;
-  setShowModal: (bool: boolean) => void;
-  showModal: boolean;
 }
 
-const Modal = ({ setConfirmed, method, setShowModal, showModal }: Props) => {
+const Modal = ({ method }: Props) => {
+  const { setConfirmed } = useConfirmation();
+  const { showModal, setShowModal } = useModal();
+
   let modalBg =
     'min-w-screen h-screen animated fadeIn faster  fixed  left-0 top-0 flex justify-center items-center inset-0 z-20 outline-none focus:outline-none bg-no-repeat bg-center bg-cover ';
   let modalClasses =
@@ -34,18 +35,20 @@ const Modal = ({ setConfirmed, method, setShowModal, showModal }: Props) => {
 
           <div className="p-3  mt-2 text-center space-x-4 md:block">
             <button
-              onClick={() => {
-                setConfirmed(false);
-                setShowModal(false);
+              onClick={(e) => {
+                e.preventDefault();
+                setConfirmed?.(false);
+                setShowModal?.(false);
               }}
               className="mb-2 md:mb-0 bg-white px-5 py-2 text-sm shadow-sm font-medium tracking-wider border text-gray-600 rounded-full hover:shadow-lg hover:bg-gray-100"
             >
               Cancel
             </button>
             <button
+              type="submit"
               onClick={() => {
-                setConfirmed(true);
-                setShowModal(false);
+                setConfirmed?.(true);
+                setShowModal?.(false);
               }}
               className="mb-2 md:mb-0 bg-red-500 border border-red-500 px-5 py-2 text-sm shadow-sm font-medium tracking-wider text-white rounded-full hover:shadow-lg hover:bg-red-600"
             >

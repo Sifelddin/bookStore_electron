@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { fetchData } from '../hooks';
-import Spinner from '../Spinner';
+import { fetchData } from '../../hooks';
+import Spinner from '../UI/Spinner';
 import SupplierForm from './SupplierForm';
 
 const EditSupplier = () => {

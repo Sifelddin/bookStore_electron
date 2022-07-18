@@ -1,10 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
 import { AxiosResponse } from 'axios';
-import { postData } from '../hooks';
+import { Link, useNavigate } from 'react-router-dom';
+import { postData } from '../../hooks';
 import { IFormInputs, ISupplier } from './interfaces';
 import Modal from '../modal';
+import Button from '../UI/Button';
+import Label from '../UI/Label';
+import ErrorSpan from '../UI/ErrorSpan';
+import LinkSpan from '../UI/LinkSpan';
+import { useConfirmation, useModal } from '../../contexts/ConfirmContext';
 
 interface Evalidation {
   code: string;
@@ -19,8 +24,9 @@ interface Props {
 
 const SupplierForm = ({ supplier, method }: Props) => {
   const [postStatus, setPostStatus] = useState<AxiosResponse | undefined>(undefined);
-  const [confirmed, setConfirmed] = useState(false);
-  const [showModal, setShowModal] = useState(false);
+  const navigate = useNavigate();
+  const { confirmed, setConfirmed } = useConfirmation();
+  const { setShowModal } = useModal();
 
   const [errApiMessages, setErrApiMessages] = useState<Evalidation[] | null>(null);
 
@@ -29,12 +35,17 @@ const SupplierForm = ({ supplier, method }: Props) => {
     handleSubmit,
     formState: { errors }
   } = useForm<IFormInputs>();
+  console.log(confirmed);
 
   const onSubmit = (data: IFormInputs) => {
     if (confirmed) {
-      postData(method, supplier ? supplier['@id'] : `/api/suppliers`, data, setPostStatus);
+      postData(method, supplier ? supplier['@id'] : `/api/suppliers`, data, setPostStatus).then(() => {
+        navigate('/admin/suppliers', { replace: true });
+        setConfirmed?.(false);
+      });
     }
   };
+
   useEffect(() => {
     if (typeof postStatus !== 'undefined' && postStatus.status === 422) {
       setErrApiMessages(postStatus.data.violations);
@@ -48,7 +59,7 @@ const SupplierForm = ({ supplier, method }: Props) => {
       <div className="flex flex-col w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
         <form onSubmit={handleSubmit(onSubmit)} className="p-2 md:p-6">
           <div className="flex items-center text-lg mb-6 md:mb-8 w-full">
-            <label htmlFor="contactName" className="block text-md font-medium text-gray-700 w-full">
+            <Label feildId="contactName">
               Contact Name
               <input
                 type="text"
@@ -59,30 +70,18 @@ const SupplierForm = ({ supplier, method }: Props) => {
                   required: true
                 })}
               />
-              {errors.contactName?.type === 'required' && (
-                <span className="text-red-600 text-sm">this feild is required</span>
-              )}
-              {}
-            </label>
+              {errors.contactName?.type === 'required' && <ErrorSpan>this feild is required</ErrorSpan>}
+            </Label>
           </div>
           <div className="w-full grid grid-cols-2 gap-3 ">
-            <button
-              onClick={() => setShowModal(true)}
-              className="uppercase inline-block rounded-md bg-green-500 px-6 py-2 font-semibold text-white shadow-md duration-75 hover:bg-green-400 w-full"
-            >
-              Register
-            </button>
-            <Link
-              className="uppercase text-center inline-block rounded-md bg-gray-700 px-6 py-2 font-semibold text-white shadow-md duration-75 hover:bg-gray-500 w-full"
-              to="../suppliers"
-            >
-              {' '}
-              List
+            <Button handler={setShowModal}>{method === 'post' ? 'Create' : 'Update'}</Button>
+            <Link to="/admin/suppliers" replace>
+              <LinkSpan link="/admin/suppliers">List</LinkSpan>
             </Link>
           </div>
+          <Modal method={method} />
         </form>
       </div>
-      <Modal method={method} setConfirmed={setConfirmed} setShowModal={setShowModal} showModal={showModal} />
     </div>
   );
 };

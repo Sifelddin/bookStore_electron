@@ -19,7 +19,7 @@ function createWindow() {
     resizable: true,
     fullscreenable: true,
     webPreferences: {
-      preload: join(__dirname, 'preload+.js')
+      preload: join(__dirname, 'preload.js')
     }
   });
 
@@ -33,7 +33,7 @@ function createWindow() {
     window?.loadFile(url);
   }
   // Open the DevTools.
-  //window.webContents.openDevTools();
+  window.webContents.openDevTools();
 
   // For AppBar
   ipcMain.on('minimize', () => {
