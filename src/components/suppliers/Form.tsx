@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useForm } from 'react-hook-form';
-import { AxiosResponse } from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import { postData } from '../../hooks';
 import { IFormInputs, ISupplier } from './interfaces';
@@ -9,7 +8,7 @@ import Button from '../UI/Button';
 import Label from '../UI/Label';
 import ErrorSpan from '../UI/ErrorSpan';
 import LinkSpan from '../UI/LinkSpan';
-import { useConfirmation, useModal } from '../../contexts/ConfirmContext';
+import { useModal } from '../../contexts/ConfirmContext';
 
 interface Evalidation {
   code: string;
@@ -23,36 +22,31 @@ interface Props {
 }
 
 const SupplierForm = ({ supplier, method }: Props) => {
-  const [postStatus, setPostStatus] = useState<AxiosResponse | undefined>(undefined);
   const navigate = useNavigate();
-  const { confirmed, setConfirmed } = useConfirmation();
   const { setShowModal } = useModal();
-
-  const [errApiMessages, setErrApiMessages] = useState<Evalidation[] | null>(null);
 
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors }
   } = useForm<IFormInputs>();
-  console.log(confirmed);
 
-  const onSubmit = (data: IFormInputs) => {
-    if (confirmed) {
-      postData(method, supplier ? supplier['@id'] : `/api/suppliers`, data, setPostStatus).then(() => {
-        navigate('/admin/suppliers', { replace: true });
-        setConfirmed?.(false);
+  const onSubmit = async (data: IFormInputs) => {
+    try {
+      await postData(method, supplier ? supplier['@id'] : `/api/suppliers`, data);
+      navigate('/admin/suppliers', { replace: true });
+    } catch (e: any) {
+      e.response?.data?.violations?.map((violation: Evalidation) => {
+        return setError('contactName', { type: 'errors server', message: violation.message });
       });
     }
   };
 
-  useEffect(() => {
-    if (typeof postStatus !== 'undefined' && postStatus.status === 422) {
-      setErrApiMessages(postStatus.data.violations);
-    }
-  }, [postStatus]);
-
-  console.log(errApiMessages);
+  const show = (e: Event) => {
+    e.preventDefault();
+    setShowModal?.(true);
+  };
 
   return (
     <div className="h-screen overflow-hidden flex items-center justify-center">
@@ -71,10 +65,11 @@ const SupplierForm = ({ supplier, method }: Props) => {
                 })}
               />
               {errors.contactName?.type === 'required' && <ErrorSpan>this feild is required</ErrorSpan>}
+              {errors.contactName?.type === 'errors server' && <ErrorSpan>{errors.contactName.message}</ErrorSpan>}
             </Label>
           </div>
           <div className="w-full grid grid-cols-2 gap-3 ">
-            <Button handler={setShowModal}>{method === 'post' ? 'Create' : 'Update'}</Button>
+            <Button handler={show}>{method === 'post' ? 'Create' : 'Update'}</Button>
             <Link to="/admin/suppliers" replace>
               <LinkSpan link="/admin/suppliers">List</LinkSpan>
             </Link>

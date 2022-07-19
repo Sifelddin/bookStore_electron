@@ -1,7 +1,7 @@
 import React from 'react';
 
 interface ErrSpanProps {
-  children: string;
+  children: string | undefined;
 }
 
 const ErrorSpan = ({ children }: ErrSpanProps) => {

@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from 'axios';
+import axios from 'axios';
 
 const baseUrl = 'https://127.0.0.1:8000';
 
@@ -14,8 +14,8 @@ export const fetchData = async (url: string, callback: (value: any) => void) => 
 };
 
 // postData function used for the posting data operations : post,delete,put
-export const postData = async (method: string, url: string, data?: object, callback?: (value: any) => void) => {
-  return axios({ method, url, baseURL: baseUrl, data })
-    .then((res) => (callback ? callback(res) : console.log(res)))
-    .catch((err) => (callback ? callback(err.response as AxiosResponse) : console.log(err)));
+export const postData = async (method: string, url: string, data?: object) => {
+  return axios({ method, url, baseURL: baseUrl, data });
+  // .then((res) => (callback ? callback(res) : console.log(res)))
+  // .catch((err) => (callback ? callback(err.response as AxiosResponse) : console.log(err)));
 };

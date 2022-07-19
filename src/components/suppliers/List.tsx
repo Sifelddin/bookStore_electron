@@ -13,15 +13,16 @@ const Suppliers = () => {
   const [supplier, setSupplier] = useState<string | null>(null);
   const { confirmed, setConfirmed } = useConfirmation();
   const { setShowModal } = useModal();
-  console.log(confirmed);
+
+  const deleteMethode = 'delete';
+  useEffect(() => {
+    fetchData('/api/suppliers', setSuppliers);
+  }, []);
 
   useEffect(() => {
     if (supplier && confirmed) {
-      postData('delete', supplier).then(() => fetchData('/api/suppliers', setSuppliers));
+      postData(deleteMethode, supplier).then(() => fetchData('/api/suppliers', setSuppliers));
       setConfirmed?.(false);
-      console.log('deleted');
-    } else {
-      fetchData('/api/suppliers', setSuppliers);
     }
   }, [supplier, confirmed]);
 
@@ -91,7 +92,7 @@ const Suppliers = () => {
           </div>
         </div>
       </div>
-      <Modal method="Delete" />
+      <Modal method={deleteMethode} />
     </div>
   );
 };
