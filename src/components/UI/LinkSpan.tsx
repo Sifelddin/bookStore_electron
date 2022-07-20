@@ -2,7 +2,7 @@ import React from 'react';
 
 interface ToListProps {
   link: string;
-  children: string;
+  children: string[] | string;
 }
 
 const LinkSpan = ({ link, children }: ToListProps) => {

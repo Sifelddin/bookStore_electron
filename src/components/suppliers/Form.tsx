@@ -2,22 +2,16 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { postData } from '../../hooks';
-import { IFormInputs, ISupplier } from './interfaces';
 import Modal from '../modal';
 import Button from '../UI/Button';
 import Label from '../UI/Label';
 import ErrorSpan from '../UI/ErrorSpan';
 import LinkSpan from '../UI/LinkSpan';
 import { useModal } from '../../contexts/ConfirmContext';
-
-interface Evalidation {
-  code: string;
-  message: string;
-  propertyPath: string;
-}
+import { Evalidation, Supplier, FormInputs } from '../interfaces';
 
 interface Props {
-  supplier?: ISupplier;
+  supplier?: Supplier;
   method: string;
 }
 
@@ -30,14 +24,14 @@ const SupplierForm = ({ supplier, method }: Props) => {
     handleSubmit,
     setError,
     formState: { errors }
-  } = useForm<IFormInputs>();
+  } = useForm<FormInputs>();
 
-  const onSubmit = async (data: IFormInputs) => {
+  const onSubmit = async (data: FormInputs) => {
     try {
       await postData(method, supplier ? supplier['@id'] : `/api/suppliers`, data);
       navigate('/admin/suppliers', { replace: true });
     } catch (e: any) {
-      e.response?.data?.violations?.map((violation: Evalidation) => {
+      e.response.data.violations.map((violation: Evalidation) => {
         return setError('contactName', { type: 'errors server', message: violation.message });
       });
     }

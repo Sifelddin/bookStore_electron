@@ -101,10 +101,13 @@ const Aside = () => {
                 <ImBooks className="w-6 h-6 fill-current inline-block" />
                 <span className="cursor-pointer text-sm">Books</span>
               </div>
-              <div className=" font-medium text-gray-700 py-2 px-2 hover:bg-teal-500 hover:text-white hover:scale-105 rounded-md transition duration-150 ease-in-out cursor-pointer">
+              <Link
+                to="categories"
+                className=" font-medium text-gray-700 py-2 px-2 hover:bg-teal-500 hover:text-white hover:scale-105 rounded-md transition duration-150 ease-in-out cursor-pointer"
+              >
                 <MdCategory className="w-6 h-6 fill-current inline-block" />
                 <span className="cursor-pointer text-sm">Categories</span>
-              </div>
+              </Link>
               <a
                 href="/"
                 className="text-sm font-medium text-gray-700 py-2 px-2 hover:bg-teal-500 hover:text-white hover:scale-105 rounded-md transition duration-150 ease-in-out"

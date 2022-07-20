@@ -7,6 +7,8 @@ import App from './pages/App';
 import Home from './pages/home';
 import NewSupplier from './components/suppliers/New';
 import EditSupplier from './components/suppliers/Edit';
+import List from './components/categories/List';
+import Edit from './components/categories/Edit';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -17,6 +19,8 @@ ReactDOM.render(
           <Route path="suppliers" element={<Suppliers />} />
           <Route path="suppliers/new" element={<NewSupplier />} />
           <Route path="suppliers/:id" element={<EditSupplier />} />
+          <Route path="categories" element={<List />} />
+          <Route path="categories/edit" element={<Edit />} />
         </Route>
       </Routes>
     </HashRouter>
