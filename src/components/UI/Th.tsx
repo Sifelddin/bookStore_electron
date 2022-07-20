@@ -8,7 +8,7 @@ const Th = ({ children }: { children: string }) => {
   );
 };
 
-export const Td = ({ children }: { children: string | number }) => {
+export const Td = ({ children }: { children?: string | number }) => {
   return <td className="px-2 py-2">{children}</td>;
 };
 

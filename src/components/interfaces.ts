@@ -1,19 +1,19 @@
-export interface Supplier {
+export type Supplier = {
   '@id': string;
   '@type': string;
   books: string[];
   contactName: string;
   id: number;
-}
+};
 
-export interface Category {
+export type Category = {
   '@id': string;
   '@type': string;
   catParent: null;
   name: string;
   photo: string;
   id: number;
-}
+};
 export interface View {
   '@id': string;
   '@type': string;
@@ -22,14 +22,14 @@ export interface View {
   'hydra:next': string;
 }
 
-export interface Data {
+export type Data = {
   '@context': string;
   '@id': string;
   '@type': string;
-  'hydra:member': (Category & Supplier)[];
+  'hydra:member': (Category | Supplier)[];
   'hydra:totalItems': number;
   'hydra:view': View;
-}
+};
 export interface Content {
   loading: boolean;
   data: Data | undefined;

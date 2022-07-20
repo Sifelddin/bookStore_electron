@@ -44,26 +44,28 @@ const Suppliers = () => {
       <tbody>
         {data?.['hydra:member'].map((sup) => {
           return (
-            <tr key={sup.id}>
-              <Td>{sup.id}</Td>
-              <Td>{sup.contactName}</Td>
-              <td className="grid grid-cols-2 items-center px-6 py-4 whitespace-nowrap text-sm font-medium">
-                <Link to={`${sup.id}`} state={sup}>
-                  <LinkSpan link={`${sup.id}`}>edit</LinkSpan>
-                </Link>
-                {sup.books.length > 0 || (
-                  <button
-                    onClick={() => {
-                      setShowModal?.(true);
-                      setSupplier(sup['@id']);
-                    }}
-                    className="text-red-500 hover:text-red-700 cursor:pointer"
-                  >
-                    Delete
-                  </button>
-                )}
-              </td>
-            </tr>
+            'contactName' in sup && (
+              <tr key={sup.id}>
+                <Td>{sup.id}</Td>
+                <Td>{sup.contactName}</Td>
+                <td className="grid grid-cols-2 items-center px-6 py-4 whitespace-nowrap text-sm font-medium">
+                  <Link to={`${sup.id}`} state={sup}>
+                    <LinkSpan link={`${sup.id}`}>edit</LinkSpan>
+                  </Link>
+                  {sup.books.length > 0 || (
+                    <button
+                      onClick={() => {
+                        setShowModal?.(true);
+                        setSupplier(sup['@id']);
+                      }}
+                      className="text-red-500 hover:text-red-700 cursor:pointer"
+                    >
+                      Delete
+                    </button>
+                  )}
+                </td>
+              </tr>
+            )
           );
         })}
       </tbody>
