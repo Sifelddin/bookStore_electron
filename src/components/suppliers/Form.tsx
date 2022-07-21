@@ -31,10 +31,15 @@ const SupplierForm = ({ supplier, method }: Props) => {
       await postData(method, supplier ? supplier['@id'] : `/api/suppliers`, data);
       navigate('/admin/suppliers', { replace: true });
     } catch (e: any) {
-      e.response.data.violations.map((violation: Evalidation) => {
-        return setError('contactName', { type: 'errors server', message: violation.message });
-      });
+      console.log(e);
+
+      return e.response.data.violations
+        ? e.response.data.violations.map((violation: Evalidation) => {
+            return setError('contactName', { type: 'errors server', message: violation.message });
+          })
+        : setError('contactName', { type: 'errors server', message: 'an server error occurred ' });
     }
+    return data;
   };
 
   const show = (e: Event) => {

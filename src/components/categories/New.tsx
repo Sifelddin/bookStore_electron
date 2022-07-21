@@ -1,7 +1,8 @@
 import React from 'react';
+import CategoryForm from './Form';
 
-const New = () => {
-  return <div>New</div>;
+const NewCategory = () => {
+  return <CategoryForm method="post" />;
 };
 
-export default New;
+export default NewCategory;

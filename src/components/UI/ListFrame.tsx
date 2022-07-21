@@ -28,7 +28,7 @@ const ListFrame = ({ method, children, data, newItem }: Props) => {
               <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
                 <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
                   <span className="text-base sm:text-lg p-4 text-gray-700">Total : {data?.['hydra:totalItems']}</span>
-                  <table className="min-w-full divide-y divide-gray-200">{children}</table>
+                  {children}
                 </div>
               </div>
             </div>

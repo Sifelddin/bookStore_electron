@@ -20,6 +20,7 @@ export interface View {
   'hydra:first': string;
   'hydra:last': string;
   'hydra:next': string;
+  'hydra:previous': string;
 }
 
 export type Data = {
@@ -43,4 +44,7 @@ export interface Evalidation {
 
 export interface FormInputs {
   contactName: string;
+  name: string;
+  catParent: string;
+  photo: string;
 }

@@ -1,10 +1,23 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { fetchData } from '../../hooks';
+import Spinner from '../UI/Spinner';
+import CategoryForm from './Form';
 
-const Edit = () => {
-  // function createLabel(nameOrId: string | number): IdLabel | NameLabel;
-  // function createLabel(nameOrId: string | number): IdLabel | NameLabel {}
+const EditCategories = () => {
+  const { id } = useParams();
+  const [category, setCategory] = useState({ loading: true, data: undefined });
 
-  return <div>Edit</div>;
+  useEffect(() => {
+    fetchData(`/api/categories/${id}`, setCategory);
+  }, []);
+
+  const { loading, data } = category;
+
+  if (loading) {
+    return <Spinner />;
+  }
+  return <CategoryForm category={data} method="put" />;
 };
 
-export default Edit;
+export default EditCategories;
