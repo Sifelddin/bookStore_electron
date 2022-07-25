@@ -57,8 +57,8 @@ const ListCategories = () => {
                   <td className="px-4 py-4 whitespace-nowrap inline-block h-24 w-24 rounded-full ring-2 ring-white">
                     <img
                       className="h-full object-cover"
-                      src={`https://localhost:8000/uploads/images/${cat.photo}`}
-                      alt={`https://localhost:8000/uploads/images/${cat.photo}`}
+                      src={`https://localhost:8000/images/categories/${cat.photo}`}
+                      alt={`${cat.name}`}
                     />
                   </td>
                   <Td>{cat.name}</Td>
