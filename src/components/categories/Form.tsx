@@ -105,7 +105,7 @@ const CategoryForm = ({ category, method }: Props) => {
                   id="parentCategory"
                   {...register('catParent')}
                 >
-                  <option value={category?.name}> {category?.name || 'select parent category...'}</option>
+                  <option value={category?.name}> {category?.catParent?.name || 'select parent category...'}</option>
                   {data?.['hydra:member'].map((parent) => {
                     return (
                       'name' in parent && (
