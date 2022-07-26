@@ -28,7 +28,7 @@ const SupplierForm = ({ supplier, method }: Props) => {
 
   const onSubmit = async (data: FormInputs) => {
     try {
-      await postData(method, supplier ? supplier['@id'] : `/api/suppliers`, data);
+      await postData(method, supplier ? supplier['@id'] : `/api/suppliers`, undefined, data);
       navigate('/admin/suppliers', { replace: true });
     } catch (e: any) {
       console.log(e);
@@ -52,7 +52,7 @@ const SupplierForm = ({ supplier, method }: Props) => {
       <div className="flex flex-col w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
         <form onSubmit={handleSubmit(onSubmit)} className="p-2 md:p-6">
           <div className="flex items-center text-lg mb-6 md:mb-8 w-full">
-            <Label feildId="contactName">
+            <Label fieldId="contactName">
               Contact Name
               <input
                 type="text"

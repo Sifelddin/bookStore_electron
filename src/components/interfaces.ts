@@ -42,9 +42,17 @@ export interface Evalidation {
   propertyPath: string;
 }
 
+export type File = {
+  lastModified: number;
+  lastModifiedDate: Date;
+  name: string;
+  size: number;
+  type: string;
+  webkitRelativePath: string;
+};
 export interface FormInputs {
   contactName: string;
   name: string;
   catParent: string;
-  photo: string;
+  imageFile: string;
 }

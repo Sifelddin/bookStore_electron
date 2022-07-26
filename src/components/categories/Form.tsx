@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
-import { fetchData, postData } from '../../hooks';
+import { fetchData, postData, baseUrl } from '../../hooks';
 import Modal from '../modal';
 import Button from '../UI/Button';
 import Label from '../UI/Label';
@@ -31,10 +31,25 @@ const CategoryForm = ({ category, method }: Props) => {
   } = useForm<FormInputs>();
 
   const onSubmit = async (data: FormInputs) => {
+    console.log(data.imageFile[0]);
+
+    const formData = new FormData();
+    formData.append('name', data.name);
+    formData.append('catParent', data.catParent);
+    formData.append('imageFile', data.imageFile[0]);
+
     try {
-      await postData(method, category ? category['@id'] : '/api/categories', data);
+      await postData(
+        method,
+        category ? `${category['@id']}/image` : '/api/categories',
+        { 'Content-Type': 'multipart/form-data' },
+        formData
+      );
       navigate('/admin/categories', { replace: true });
+      console.log('posted');
     } catch (e: any) {
+      console.log(e);
+
       return e.response.data.violations
         ? e.response.data.violations.map((violation: Evalidation) => {
             return setError('name', { type: 'errors server', message: violation.message });
@@ -45,6 +60,7 @@ const CategoryForm = ({ category, method }: Props) => {
   };
 
   const { loading, data } = categoriesParent;
+  console.log(category);
 
   const show = (e: Event) => {
     e.preventDefault();
@@ -54,9 +70,18 @@ const CategoryForm = ({ category, method }: Props) => {
   return (
     <div className="h-screen overflow-hidden flex items-center justify-center">
       <div className="flex flex-col w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
+        {category && (
+          <div className="mx-auto">
+            <img
+              className="h-52 hover:scale-150 hover:translate-y-14 z-40 transition-all duration-200"
+              src={`${baseUrl}/images/categories/${category.photo}`}
+              alt={category.name}
+            />
+          </div>
+        )}
         <form onSubmit={handleSubmit(onSubmit)} className="p-2 md:p-6">
           <div className="flex items-center text-lg mb-4 md:mb-6 w-full">
-            <Label feildId="category">
+            <Label fieldId="category">
               Category
               <input
                 type="text"
@@ -72,7 +97,7 @@ const CategoryForm = ({ category, method }: Props) => {
             </Label>
           </div>
           <div className="flex items-center text-lg mb-6 md:mb-8 w-full">
-            <Label feildId="parentCategory">
+            <Label fieldId="parentCategory">
               Parent Category : {data && <span className="text-gray-500">{data['hydra:totalItems']}</span>}
               {loading || (
                 <select
@@ -80,12 +105,12 @@ const CategoryForm = ({ category, method }: Props) => {
                   id="parentCategory"
                   {...register('catParent')}
                 >
+                  <option value={category?.name}> {category?.name || 'select parent category...'}</option>
                   {data?.['hydra:member'].map((parent) => {
                     return (
                       'name' in parent && (
                         <option key={parent.id} value={parent['@id']}>
-                          {' '}
-                          {parent.name}{' '}
+                          {parent.name}
                         </option>
                       )
                     );
@@ -95,19 +120,17 @@ const CategoryForm = ({ category, method }: Props) => {
             </Label>
           </div>
           <div className="flex items-center text-lg mb-4 md:mb-6 w-full">
-            <Label feildId="photo">
-              Category
+            <Label fieldId="photo">
               <input
                 type="file"
                 id="photo"
-                defaultValue={category?.name}
-                className="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-4 pr-7 sm:text-md border-gray-300 rounded-md"
-                {...register('photo', {
+                className="cursor-pointer"
+                {...register('imageFile', {
                   required: true
                 })}
               />
-              {errors.photo?.type === 'required' && <ErrorSpan>this feild is required</ErrorSpan>}
-              {errors.photo?.type === 'errors server' && <ErrorSpan>{errors.photo.message}</ErrorSpan>}
+              {errors.imageFile?.type === 'required' && <ErrorSpan>this feild is required</ErrorSpan>}
+              {errors.imageFile?.type === 'errors server' && <ErrorSpan>{errors.imageFile.message}</ErrorSpan>}
             </Label>
           </div>
           <div className="w-full grid grid-cols-2 gap-3 ">

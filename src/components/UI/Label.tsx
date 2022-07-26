@@ -1,13 +1,13 @@
 import React from 'react';
 
 interface LabelProps {
-  feildId: string;
+  fieldId: string;
   children: React.ReactNode;
 }
 
-const Label = ({ feildId, children }: LabelProps) => {
+const Label = ({ fieldId, children }: LabelProps) => {
   return (
-    <label htmlFor={feildId} className="block text-md font-medium text-gray-700 w-full">
+    <label htmlFor={fieldId} className="block text-md font-medium text-gray-700 w-full">
       {children}
     </label>
   );
