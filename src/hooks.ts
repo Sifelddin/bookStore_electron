@@ -1,6 +1,13 @@
 import axios, { AxiosRequestHeaders } from 'axios';
 
-export const baseUrl = 'https://127.0.0.1:8000';
+// export const baseUrl = ((): string => {
+//   if (import.meta.env.DEV) return <string>import.meta.env.VITE_BASE_URL_DEV;
+//   return <string>import.meta.env.VITE_BASE_URL_PROD;
+// })();
+
+export const baseUrl = import.meta.env.DEV
+  ? <string>import.meta.env.VITE_BASE_URL_DEV
+  : <string>import.meta.env.VITE_BASE_URL_PROD;
 
 export const fetchData = async (url: string, callback: (value: any) => void) => {
   const res = await axios.get(url, {

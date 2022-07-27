@@ -34,7 +34,6 @@ const ListCategories = () => {
   if (loading) {
     return <Spinner />;
   }
-  console.log(data);
 
   return (
     <ListFrame method={deleteMethode} data={data} newItem="Category">

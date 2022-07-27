@@ -13,9 +13,10 @@ import { Evalidation, Category, FormInputs, Content } from '../interfaces';
 interface Props {
   category?: Category;
   method: string;
+  action?: string;
 }
 
-const CategoryForm = ({ category, method }: Props) => {
+const CategoryForm = ({ category, method, action }: Props) => {
   const [categoriesParent, setCategoriesParent] = useState<Content>({ loading: true, data: undefined });
   const navigate = useNavigate();
   const { setShowModal } = useModal();
@@ -31,22 +32,27 @@ const CategoryForm = ({ category, method }: Props) => {
   } = useForm<FormInputs>();
 
   const onSubmit = async (data: FormInputs) => {
-    console.log(data.imageFile[0]);
+    console.log(data);
 
     const formData = new FormData();
     formData.append('name', data.name);
+
     formData.append('catParent', data.catParent);
-    formData.append('imageFile', data.imageFile[0]);
+
+    if (data.imageFile[0]) {
+      formData.append('imageFile', data.imageFile[0]);
+    }
 
     try {
-      await postData(
+      const res = await postData(
         method,
         category ? `${category['@id']}/image` : '/api/categories',
         { 'Content-Type': 'multipart/form-data' },
         formData
       );
-      navigate('/admin/categories', { replace: true });
-      console.log('posted');
+      console.log(res);
+
+      //   navigate('/admin/categories', { replace: true });
     } catch (e: any) {
       console.log(e);
 
@@ -59,13 +65,13 @@ const CategoryForm = ({ category, method }: Props) => {
     return data;
   };
 
-  const { loading, data } = categoriesParent;
-  console.log(category);
+  const { data } = categoriesParent;
 
-  const show = (e: Event) => {
+  const show = (e: MouseEvent) => {
     e.preventDefault();
     setShowModal?.(true);
   };
+  console.log(category);
 
   return (
     <div className="h-screen overflow-hidden flex items-center justify-center">
@@ -73,7 +79,7 @@ const CategoryForm = ({ category, method }: Props) => {
         {category && (
           <div className="mx-auto">
             <img
-              className="h-52 hover:scale-150 hover:translate-y-14 z-40 transition-all duration-200"
+              className="h-52 hover:scale-150 hover:translate-y-14 duration-200"
               src={`${baseUrl}/images/categories/${category.photo}`}
               alt={category.name}
             />
@@ -96,19 +102,33 @@ const CategoryForm = ({ category, method }: Props) => {
               {errors.contactName?.type === 'errors server' && <ErrorSpan>{errors.contactName.message}</ErrorSpan>}
             </Label>
           </div>
-          <div className="flex items-center text-lg mb-6 md:mb-8 w-full">
-            <Label fieldId="parentCategory">
-              Parent Category : {data && <span className="text-gray-500">{data['hydra:totalItems']}</span>}
-              {loading || (
+
+          {(category?.subCategories.length !== 0 && action === 'update') || (
+            <div className="flex items-center text-lg mb-6 md:mb-8 w-full">
+              <Label fieldId="parentCategory">
+                Parent Category : {data && <span className="text-gray-500">{data['hydra:totalItems']}</span>}
                 <select
                   className="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-4 pr-7 sm:text-md border-gray-300 rounded-md"
                   id="parentCategory"
+                  defaultValue={category?.catParent?.name}
                   {...register('catParent')}
                 >
-                  <option value={category?.name}> {category?.catParent?.name || 'select parent category...'}</option>
+                  {/* updata action check if there is a parent category */}
+                  {category?.catParent && <option value={category?.['@id']}> {category?.catParent?.name}</option>}
+
+                  {(!category || category?.books.length === 0) && (
+                    <option value="null" className="text-gray-400">
+                      select parent category...
+                    </option>
+                  )}
+
                   {data?.['hydra:member'].map((parent) => {
+                    console.log(parent);
+
                     return (
-                      'name' in parent && (
+                      'name' in parent &&
+                      parent.name !== category?.catParent?.name &&
+                      category?.name !== parent.name && (
                         <option key={parent.id} value={parent['@id']}>
                           {parent.name}
                         </option>
@@ -116,9 +136,10 @@ const CategoryForm = ({ category, method }: Props) => {
                     );
                   })}
                 </select>
-              )}
-            </Label>
-          </div>
+              </Label>
+            </div>
+          )}
+
           <div className="flex items-center text-lg mb-4 md:mb-6 w-full">
             <Label fieldId="photo">
               <input
@@ -126,7 +147,7 @@ const CategoryForm = ({ category, method }: Props) => {
                 id="photo"
                 className="cursor-pointer"
                 {...register('imageFile', {
-                  required: true
+                  required: action === 'create'
                 })}
               />
               {errors.imageFile?.type === 'required' && <ErrorSpan>this feild is required</ErrorSpan>}

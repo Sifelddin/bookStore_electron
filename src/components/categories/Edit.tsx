@@ -17,7 +17,7 @@ const EditCategories = () => {
   if (loading) {
     return <Spinner />;
   }
-  return <CategoryForm category={data} method="post" />;
+  return <CategoryForm category={data} method="post" action="update" />;
 };
 
 export default EditCategories;

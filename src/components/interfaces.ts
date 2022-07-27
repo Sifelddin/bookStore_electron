@@ -9,10 +9,12 @@ export type Supplier = {
 export type Category = {
   '@id': string;
   '@type': string;
-  catParent: null;
+  catParent: null | Category;
   name: string;
   photo: string;
   id: number;
+  subCategories: Category[];
+  books: string[];
 };
 export interface View {
   '@id': string;
