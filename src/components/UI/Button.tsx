@@ -11,13 +11,13 @@ const Button = ({ handler, children }: Props) => {
     case 'delete':
       classes += ' bg-red-500 border-red-500 hover:bg-red-600 ';
       break;
-    case 'Update':
+    case 'update':
       classes += 'bg-blue-500 border-blue-500 hover:bg-blue-600';
       break;
     case 'Cancel':
       classes += ' bg-stone-500 border-stone-500 hover:bg-stone-600';
       break;
-    case 'Create':
+    case 'create':
       classes += 'bg-green-500 border-green-500 hover:bg-green-600';
       break;
     case 'confirm':

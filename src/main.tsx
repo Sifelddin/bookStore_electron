@@ -10,6 +10,10 @@ import EditSupplier from './components/suppliers/Edit';
 import ListCategories from './components/categories/List';
 import EditCategories from './components/categories/Edit';
 import NewCategory from './components/categories/New';
+import NewBook from './components/Books/New';
+import ShowBook from './components/Books/Show';
+import EditBook from './components/Books/Edit';
+import ListBooks from './components/Books/List';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -23,6 +27,10 @@ ReactDOM.render(
           <Route path="categories" element={<ListCategories />} />
           <Route path="categories/:id" element={<EditCategories />} />
           <Route path="categories/new" element={<NewCategory />} />
+          <Route path="books/new" element={<NewBook />} />
+          <Route path="books/:slug/:id" element={<ShowBook />} />
+          <Route path="books/:slug/:id/edit" element={<EditBook />} />
+          <Route path="books" element={<ListBooks />} />
         </Route>
       </Routes>
     </HashRouter>

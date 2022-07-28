@@ -16,6 +16,20 @@ export type Category = {
   subCategories: Category[];
   books: string[];
 };
+
+export type Book = {
+  '@id': string;
+  '@type': string;
+  author: string;
+  id: number;
+  photo: string;
+  price: string;
+  releaseDate: string;
+  title: string;
+  slug: string;
+  stock: number;
+  published: boolean;
+};
 export interface View {
   '@id': string;
   '@type': string;
@@ -29,7 +43,7 @@ export type Data = {
   '@context': string;
   '@id': string;
   '@type': string;
-  'hydra:member': (Category | Supplier)[];
+  'hydra:member': (Category | Supplier | Book)[];
   'hydra:totalItems': number;
   'hydra:view': View;
 };
@@ -57,4 +71,22 @@ export interface FormInputs {
   name: string;
   catParent: string;
   imageFile: string;
+  title: string;
+  author: string;
+  editor: string;
+  description: string;
+  price: string;
+  category: string;
+  stock: number;
+  stockAlert: number;
+  published: boolean;
+  supplier: string;
+}
+
+export interface FormComponentProps {
+  method: string;
+  action: string;
+  book?: Book;
+  supplier?: Supplier;
+  category?: Category;
 }

@@ -8,18 +8,13 @@ import Label from '../UI/Label';
 import ErrorSpan from '../UI/ErrorSpan';
 import LinkSpan from '../UI/LinkSpan';
 import { useModal } from '../../contexts/ConfirmContext';
-import { Evalidation, Category, FormInputs, Content } from '../interfaces';
+import { Evalidation, FormInputs, Content, FormComponentProps } from '../interfaces';
 
-interface Props {
-  category?: Category;
-  method: string;
-  action?: string;
-}
-
-const CategoryForm = ({ category, method, action }: Props) => {
+const CategoryForm = ({ category, method, action }: FormComponentProps) => {
   const [categoriesParent, setCategoriesParent] = useState<Content>({ loading: true, data: undefined });
   const navigate = useNavigate();
   const { setShowModal } = useModal();
+
   useEffect(() => {
     fetchData('https://localhost:8000/api/v2/categories/all?page=1&exists%5BcatParent%5D=false', setCategoriesParent);
   }, []);
@@ -30,6 +25,10 @@ const CategoryForm = ({ category, method, action }: Props) => {
     setError,
     formState: { errors }
   } = useForm<FormInputs>();
+
+  const serverErr = (field: any, message: string) => {
+    setError(field, { type: `errors server`, message });
+  };
 
   const onSubmit = async (data: FormInputs) => {
     console.log(data);
@@ -52,15 +51,12 @@ const CategoryForm = ({ category, method, action }: Props) => {
       );
       console.log(res);
 
-      //   navigate('/admin/categories', { replace: true });
+      navigate('/admin/categories', { replace: true });
     } catch (e: any) {
+      e.response.data.violations.map((violation: Evalidation) => {
+        return serverErr(violation.propertyPath, violation.message);
+      });
       console.log(e);
-
-      return e.response.data.violations
-        ? e.response.data.violations.map((violation: Evalidation) => {
-            return setError('name', { type: 'errors server', message: violation.message });
-          })
-        : setError('name', { type: 'errors server', message: 'an server error occurred ' });
     }
     return data;
   };
@@ -71,7 +67,6 @@ const CategoryForm = ({ category, method, action }: Props) => {
     e.preventDefault();
     setShowModal?.(true);
   };
-  console.log(category);
 
   return (
     <div className="h-screen overflow-hidden flex items-center justify-center">
@@ -98,8 +93,8 @@ const CategoryForm = ({ category, method, action }: Props) => {
                   required: true
                 })}
               />
-              {errors.contactName?.type === 'required' && <ErrorSpan>this feild is required</ErrorSpan>}
-              {errors.contactName?.type === 'errors server' && <ErrorSpan>{errors.contactName.message}</ErrorSpan>}
+              {errors.name?.type === 'required' && <ErrorSpan>this feild is required</ErrorSpan>}
+              {errors.name?.type === 'errors server' && <ErrorSpan>{errors.name?.message}</ErrorSpan>}
             </Label>
           </div>
 
@@ -123,8 +118,6 @@ const CategoryForm = ({ category, method, action }: Props) => {
                   )}
 
                   {data?.['hydra:member'].map((parent) => {
-                    console.log(parent);
-
                     return (
                       'name' in parent &&
                       parent.name !== category?.catParent?.name &&
@@ -155,7 +148,7 @@ const CategoryForm = ({ category, method, action }: Props) => {
             </Label>
           </div>
           <div className="w-full grid grid-cols-2 gap-3 ">
-            <Button handler={show}>{method === 'post' ? 'Create' : 'Update'}</Button>
+            <Button handler={show}>{action}</Button>
             <Link to="/admin/categories" replace>
               <LinkSpan link="/admin/categories">List</LinkSpan>
             </Link>

@@ -1,77 +1,78 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { fetchData, postData, baseUrl } from '../../hooks';
+import { useModal, useConfirmation } from '../../contexts/ConfirmContext';
+import { baseUrl, fetchData, postData } from '../../hooks';
 import ListFrame from '../UI/ListFrame';
 import Spinner from '../UI/Spinner';
 import Th, { Td } from '../UI/Th';
-import { Category, Content } from '../interfaces';
-import LinkSpan from '../UI/LinkSpan';
+import { Content } from '../interfaces';
 import Pagination from '../UI/Pagination';
-import { useConfirmation, useModal } from '../../contexts/ConfirmContext';
 
-const ListCategories = () => {
-  const [url, setUrl] = useState('/api/v2/categories');
-  const [categories, setCategories] = useState<Content>({ loading: true, data: undefined });
-  const [category, setCategory] = useState<string | null>(null);
+const ListBooks = () => {
+  const [url, setUrl] = useState('/api/books');
+  const [books, setBooks] = useState<Content>({ loading: true, data: undefined });
+  const [book, setBook] = useState<string | null>(null);
   const deleteMethode = 'delete';
 
   const { confirmed, setConfirmed } = useConfirmation();
   const { setShowModal } = useModal();
 
   useEffect(() => {
-    fetchData(url, setCategories);
+    fetchData(url, setBooks);
   }, [url]);
 
   useEffect(() => {
-    if (category && confirmed) {
-      postData(deleteMethode, category).then(() => fetchData(url, setCategories));
+    if (book && confirmed) {
+      postData(deleteMethode, book).then(() => fetchData(url, setBooks));
       setConfirmed?.(false);
     }
-  }, [category, confirmed]);
+  }, [book, confirmed]);
 
-  const { loading, data } = categories;
-  console.log(data);
+  const { loading, data } = books;
 
   if (loading) {
-    return <Spinner />;
+    <Spinner />;
   }
+  console.log(data);
 
   return (
-    <ListFrame method={deleteMethode} data={data} newItem="Category">
+    <ListFrame method={deleteMethode} data={data} newItem="Book">
       <table className="min-w-full divide-y divide-gray-200">
         <thead className="bg-gray-50">
           <tr>
-            <Th>Id</Th>
             <Th>Photo</Th>
-            <Th>Category</Th>
-            <Th>Category Parent</Th>
+            <Th>Title</Th>
+            <Th>Price</Th>
+            <Th>Stock</Th>
+            <Th>Published</Th>
             <Th>Actions</Th>
           </tr>
         </thead>
         <tbody>
-          {data?.['hydra:member'].map((cat) => {
+          {data?.['hydra:member'].map((booK) => {
             return (
-              'name' in cat && (
-                <tr key={cat.id}>
-                  <Td>{cat.id}</Td>
+              'title' in booK && (
+                <tr key={booK.id}>
                   <td className="px-4 py-4 whitespace-nowrap inline-block h-24 w-24 rounded-full ring-2 ring-white">
                     <img
                       className="h-full object-cover"
-                      src={`${baseUrl}/images/categories/${cat.photo}`}
-                      alt={`${cat.name}`}
+                      src={`${baseUrl}/images/books/${booK.photo}`}
+                      alt={`${booK.title}`}
                     />
                   </td>
-                  <Td>{cat.name}</Td>
-                  <Td>{(cat.catParent as Category | null)?.name}</Td>
+                  <Td>{booK.title}</Td>
+                  <Td>{booK.price}</Td>
+                  <Td>{booK.stock}</Td>
+                  <Td>{booK.published ? 'yes' : 'no'}</Td>
                   <td className="grid grid-cols-2 items-center px-6 py-4 whitespace-nowrap text-sm font-medium">
-                    <Link to={`${cat.id}`}>
-                      <LinkSpan link={`${cat.id}`}>edit</LinkSpan>
+                    <Link to={`${booK.slug}/${booK.id}`}>
+                      <span className="text-green-500 hover:text-green-700"> Details</span>
                     </Link>
 
                     <button
                       onClick={() => {
                         setShowModal?.(true);
-                        setCategory(cat['@id']);
+                        setBook(booK['@id']);
                       }}
                       className="text-red-500 hover:text-red-700 cursor:pointer"
                     >
@@ -89,4 +90,4 @@ const ListCategories = () => {
   );
 };
 
-export default ListCategories;
+export default ListBooks;
