@@ -1,18 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useModal } from '../../contexts/ConfirmContext';
-import { fetchData } from '../../hooks';
-import { FormComponentProps, FormInputs, Content } from '../interfaces';
+import { fetchData, inputFormData, postData } from '../../hooks';
+import { FormComponentProps, FormInputs, Content, Evalidation } from '../interfaces';
 import Modal from '../modal';
 import Button from '../UI/Button';
 import Label from '../UI/Label';
 import LinkSpan from '../UI/LinkSpan';
 
-const BookForm = ({ method, action }: FormComponentProps) => {
+const BookForm = ({ method, action, book }: FormComponentProps) => {
   const [categories, setCategories] = useState<Content>({ loading: true, data: undefined });
   const [suppliers, setSuppliers] = useState<Content>({ loading: true, data: undefined });
   const { setShowModal } = useModal();
+
+  const navigate = useNavigate();
   useEffect(() => {
     fetchData('https://localhost:8000/api/v2/categories/all?exists%5BcatParent%5D=true', setCategories);
     fetchData('https://localhost:8000/api/suppliers', setSuppliers);
@@ -25,11 +27,31 @@ const BookForm = ({ method, action }: FormComponentProps) => {
     formState: { errors }
   } = useForm<FormInputs>();
 
-  const onSubmit = (data: any) => {
-    console.log(data);
+  const serverErr = (field: any, message: string) => {
+    setError(field, { type: `errors server`, message });
   };
-  const { data: categoriesList } = categories;
+  const onSubmit = (data: FormInputs) => {
+    console.log(data);
 
+    postData(
+      method,
+      book ? `${book['@id']}/image` : '/api/books',
+      { 'Content-Type': 'multipart/form-data' },
+      inputFormData(data)
+    )
+      .then((res) => {
+        console.log(res);
+        //   navigate('/admin/categories', { replace: true });
+      })
+      .catch((e: any) => {
+        console.log(e);
+        e.response.data?.violations?.map((violation: Evalidation) => {
+          return serverErr(violation.propertyPath, violation.message);
+        });
+      });
+  };
+
+  const { data: categoriesList } = categories;
   const { data: suppliersList } = suppliers;
 
   const show = (e: MouseEvent) => {
@@ -185,7 +207,7 @@ const BookForm = ({ method, action }: FormComponentProps) => {
                     id="Release date"
                     // defaultValue={category?.name}
                     className="focus:ring-indigo-500 focus:border-indigo-500 block  pl-4 pr-7 sm:text-md border-gray-300 rounded-md"
-                    {...register('stockAlert', {
+                    {...register('releaseDate', {
                       required: true
                     })}
                   />

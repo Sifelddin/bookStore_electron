@@ -1,4 +1,5 @@
 import axios, { AxiosRequestHeaders } from 'axios';
+import { FormInputs } from './components/interfaces';
 
 // export const baseUrl = ((): string => {
 //   if (import.meta.env.DEV) return <string>import.meta.env.VITE_BASE_URL_DEV;
@@ -25,4 +26,27 @@ export const postData = async (method: string, url: string, headers?: AxiosReque
   return axios({ method, url, baseURL: baseUrl, headers, data });
   // .then((res) => (callback ? callback(res) : console.log(res)))
   // .catch((err) => (callback ? callback(err.response as AxiosResponse) : console.log(err)));
+};
+
+export const inputFormData = (data: FormInputs) => {
+  console.log(data);
+
+  const formData = new FormData();
+  const arr = Object.keys(data) as (keyof FormInputs)[];
+  arr.map((field) => {
+    if (field === 'imageFile') {
+      console.log(field);
+      if (data[field][0]) {
+        formData.append(field, data[field][0]);
+      }
+    } else if (field === 'published') {
+      formData.append(field, data[field].toString());
+    } else {
+      formData.append(field, data[field]);
+    }
+    return formData;
+  });
+  console.log(formData.get('catParent'));
+
+  return formData;
 };

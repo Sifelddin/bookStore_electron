@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
-import { fetchData, postData, baseUrl } from '../../hooks';
+import { fetchData, postData, baseUrl, inputFormData } from '../../hooks';
 import Modal from '../modal';
 import Button from '../UI/Button';
 import Label from '../UI/Label';
@@ -31,29 +31,19 @@ const CategoryForm = ({ category, method, action }: FormComponentProps) => {
   };
 
   const onSubmit = async (data: FormInputs) => {
-    console.log(data);
-
-    const formData = new FormData();
-    formData.append('name', data.name);
-
-    formData.append('catParent', data.catParent);
-
-    if (data.imageFile[0]) {
-      formData.append('imageFile', data.imageFile[0]);
-    }
-
     try {
       const res = await postData(
         method,
         category ? `${category['@id']}/image` : '/api/categories',
         { 'Content-Type': 'multipart/form-data' },
-        formData
+        inputFormData(data)
       );
       console.log(res);
-
       navigate('/admin/categories', { replace: true });
     } catch (e: any) {
-      e.response.data.violations.map((violation: Evalidation) => {
+      console.log(e);
+
+      e.response.data?.violations?.map((violation: Evalidation) => {
         return serverErr(violation.propertyPath, violation.message);
       });
       console.log(e);
@@ -109,7 +99,9 @@ const CategoryForm = ({ category, method, action }: FormComponentProps) => {
                   {...register('catParent')}
                 >
                   {/* updata action check if there is a parent category */}
-                  {category?.catParent && <option value={category?.['@id']}> {category?.catParent?.name}</option>}
+                  {category?.catParent && (
+                    <option value={category?.catParent?.['@id']}> {category?.catParent?.name}</option>
+                  )}
 
                   {(!category || category?.books.length === 0) && (
                     <option value="null" className="text-gray-400">

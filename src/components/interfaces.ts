@@ -77,10 +77,11 @@ export interface FormInputs {
   description: string;
   price: string;
   category: string;
-  stock: number;
-  stockAlert: number;
+  stock: string;
+  stockAlert: string;
   published: boolean;
   supplier: string;
+  releaseDate: string;
 }
 
 export interface FormComponentProps {

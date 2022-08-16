@@ -50,6 +50,7 @@ const ListCategories = () => {
         </thead>
         <tbody>
           {data?.['hydra:member'].map((cat) => {
+            console.log(cat);
             return (
               'name' in cat && (
                 <tr key={cat.id}>
