@@ -9,7 +9,7 @@ import Button from '../UI/Button';
 import Label from '../UI/Label';
 import LinkSpan from '../UI/LinkSpan';
 
-const BookForm = ({ method, action, book }: FormComponentProps) => {
+const BookForm = ({ action, book }: FormComponentProps) => {
   const [categories, setCategories] = useState<Content>({ loading: true, data: undefined });
   const [suppliers, setSuppliers] = useState<Content>({ loading: true, data: undefined });
   const { setShowModal } = useModal();
@@ -34,7 +34,7 @@ const BookForm = ({ method, action, book }: FormComponentProps) => {
     console.log(data);
 
     postData(
-      method,
+      'post',
       book ? `${book['@id']}/image` : '/api/books',
       { 'Content-Type': 'multipart/form-data' },
       inputFormData(data)
@@ -279,7 +279,7 @@ const BookForm = ({ method, action, book }: FormComponentProps) => {
               <LinkSpan link="/admin/books">List</LinkSpan>
             </Link>
           </div>
-          <Modal method={method} />
+          <Modal action={action} />
         </form>
       </div>
     </div>

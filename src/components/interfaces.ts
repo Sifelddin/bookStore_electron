@@ -17,19 +17,26 @@ export type Category = {
   books: string[];
 };
 
-export type Book = {
+export interface Book {
   '@id': string;
   '@type': string;
   author: string;
+  editor: string;
   id: number;
   photo: string;
   price: string;
   releaseDate: string;
   title: string;
   slug: string;
+  description: string;
   stock: number;
+  stockAlert: number;
   published: boolean;
-};
+  category: Category;
+  supplier: Supplier;
+  updateAt: string;
+  createdAt: string;
+}
 export interface View {
   '@id': string;
   '@type': string;
@@ -85,7 +92,7 @@ export interface FormInputs {
 }
 
 export interface FormComponentProps {
-  method: string;
+  method?: string;
   action: string;
   book?: Book;
   supplier?: Supplier;

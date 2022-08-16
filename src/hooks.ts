@@ -29,13 +29,10 @@ export const postData = async (method: string, url: string, headers?: AxiosReque
 };
 
 export const inputFormData = (data: FormInputs) => {
-  console.log(data);
-
   const formData = new FormData();
   const arr = Object.keys(data) as (keyof FormInputs)[];
   arr.map((field) => {
     if (field === 'imageFile') {
-      console.log(field);
       if (data[field][0]) {
         formData.append(field, data[field][0]);
       }
@@ -46,7 +43,5 @@ export const inputFormData = (data: FormInputs) => {
     }
     return formData;
   });
-  console.log(formData.get('catParent'));
-
   return formData;
 };

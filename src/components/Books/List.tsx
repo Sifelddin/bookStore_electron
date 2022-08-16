@@ -33,7 +33,6 @@ const ListBooks = () => {
   if (loading) {
     <Spinner />;
   }
-  console.log(data);
 
   return (
     <ListFrame method={deleteMethode} data={data} newItem="Book">

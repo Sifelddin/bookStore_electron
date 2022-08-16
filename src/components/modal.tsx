@@ -4,10 +4,10 @@ import Button from './UI/Button';
 import ModalMess from './UI/ModalMess';
 
 interface Props {
-  method: string;
+  action: string;
 }
 
-const Modal = ({ method }: Props) => {
+const Modal = ({ action }: Props) => {
   const { setConfirmed } = useConfirmation();
   const { showModal, setShowModal } = useModal();
 
@@ -17,7 +17,7 @@ const Modal = ({ method }: Props) => {
   };
 
   let confirmation;
-  if (method === 'delete') {
+  if (action === 'delete') {
     confirmation = () => {
       setConfirmed?.(true);
       setShowModal?.(false);
@@ -49,7 +49,7 @@ const Modal = ({ method }: Props) => {
           <div className="text-center p-5 flex-auto justify-center">
             <h2 className="text-xl font-bold py-4 ">Are you sure?</h2>
 
-            <ModalMess method={method} />
+            <ModalMess action={action} />
           </div>
 
           <div className="p-3  mt-2 text-center space-x-4 md:block">

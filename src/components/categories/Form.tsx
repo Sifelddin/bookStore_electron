@@ -10,7 +10,7 @@ import LinkSpan from '../UI/LinkSpan';
 import { useModal } from '../../contexts/ConfirmContext';
 import { Evalidation, FormInputs, Content, FormComponentProps } from '../interfaces';
 
-const CategoryForm = ({ category, method, action }: FormComponentProps) => {
+const CategoryForm = ({ category, action }: FormComponentProps) => {
   const [categoriesParent, setCategoriesParent] = useState<Content>({ loading: true, data: undefined });
   const navigate = useNavigate();
   const { setShowModal } = useModal();
@@ -33,7 +33,7 @@ const CategoryForm = ({ category, method, action }: FormComponentProps) => {
   const onSubmit = async (data: FormInputs) => {
     try {
       const res = await postData(
-        method,
+        'post',
         category ? `${category['@id']}/image` : '/api/categories',
         { 'Content-Type': 'multipart/form-data' },
         inputFormData(data)
@@ -145,7 +145,7 @@ const CategoryForm = ({ category, method, action }: FormComponentProps) => {
               <LinkSpan link="/admin/categories">List</LinkSpan>
             </Link>
           </div>
-          <Modal method={method} />
+          <Modal action={action} />
         </form>
       </div>
     </div>

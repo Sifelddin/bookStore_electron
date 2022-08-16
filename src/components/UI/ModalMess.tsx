@@ -1,9 +1,9 @@
 import React from 'react';
 
-const ModalMess = ({ method }: { method: string }) => {
+const ModalMess = ({ action }: { action: string }) => {
   let message = '';
 
-  switch (method) {
+  switch (action) {
     case 'delete':
       message = 'Do you really want to delete this supplier? This process cannot be undone';
       break;
