@@ -41,7 +41,7 @@ const BookForm = ({ action, book }: FormComponentProps) => {
     )
       .then((res) => {
         console.log(res);
-        //   navigate('/admin/categories', { replace: true });
+        navigate('/admin/books', { replace: true });
       })
       .catch((e: any) => {
         console.log(e);
@@ -70,7 +70,7 @@ const BookForm = ({ action, book }: FormComponentProps) => {
                 <input
                   type="text"
                   id="Title"
-                  // defaultValue={category?.name}
+                  defaultValue={book?.title}
                   className="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-4 pr-7 sm:text-md border-gray-300 rounded-md"
                   {...register('title', {
                     required: true
@@ -85,7 +85,7 @@ const BookForm = ({ action, book }: FormComponentProps) => {
                 <input
                   type="text"
                   id="Author"
-                  // defaultValue={category?.name}
+                  defaultValue={book?.author}
                   className="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-4 pr-7 sm:text-md border-gray-300 rounded-md"
                   {...register('author', {
                     required: true
@@ -100,7 +100,7 @@ const BookForm = ({ action, book }: FormComponentProps) => {
                 <input
                   type="text"
                   id="Editor"
-                  // defaultValue={category?.name}
+                  defaultValue={book?.editor}
                   className="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-4 pr-7 sm:text-md border-gray-300 rounded-md"
                   {...register('editor', {
                     required: true
@@ -115,7 +115,7 @@ const BookForm = ({ action, book }: FormComponentProps) => {
                 <textarea
                   rows={6}
                   id="Description"
-                  // defaultValue={category?.name}
+                  defaultValue={book?.description}
                   className="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-4 pr-7 sm:text-md border-gray-300 rounded-md"
                   {...register('description', {
                     required: true
@@ -130,7 +130,7 @@ const BookForm = ({ action, book }: FormComponentProps) => {
                 <input
                   type="text"
                   id="Price"
-                  // defaultValue={category?.name}
+                  defaultValue={book?.price}
                   className="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-4 pr-7 sm:text-md border-gray-300 rounded-md"
                   {...register('price', {
                     required: true
@@ -148,18 +148,23 @@ const BookForm = ({ action, book }: FormComponentProps) => {
                 Category
                 <select
                   id="Category"
-                  // defaultValue={category?.name}
                   className="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-4 pr-7 sm:text-md border-gray-300 rounded-md"
                   {...register('category', {
                     required: true
                   })}
                 >
+                  {book && (
+                    <option className="text-gray-800" value={book.category['@id']}>
+                      {book.category.name}
+                    </option>
+                  )}
                   <option className="text-gray-400" hidden>
                     select a category...
                   </option>
                   {categoriesList?.['hydra:member'].map((category) => {
                     return (
-                      'name' in category && (
+                      'name' in category &&
+                      category.name !== book?.category.name && (
                         <option className="text-gray-800" key={category.id} value={category['@id']}>
                           {category.name}
                         </option>
@@ -176,7 +181,7 @@ const BookForm = ({ action, book }: FormComponentProps) => {
                 <input
                   type="number"
                   id="Stock"
-                  // defaultValue={category?.name}
+                  defaultValue={book?.stock}
                   className="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-4 pr-7 sm:text-md border-gray-300 rounded-md"
                   {...register('stock', {
                     required: true
@@ -190,7 +195,7 @@ const BookForm = ({ action, book }: FormComponentProps) => {
                 <input
                   type="number"
                   id="Stock Alert"
-                  // defaultValue={category?.name}
+                  defaultValue={book?.stockAlert}
                   className="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-4 pr-7 sm:text-md border-gray-300 rounded-md"
                   {...register('stockAlert', {
                     required: true
@@ -205,7 +210,7 @@ const BookForm = ({ action, book }: FormComponentProps) => {
                   <input
                     type="date"
                     id="Release date"
-                    // defaultValue={category?.name}
+                    defaultValue={book?.releaseDate}
                     className="focus:ring-indigo-500 focus:border-indigo-500 block  pl-4 pr-7 sm:text-md border-gray-300 rounded-md"
                     {...register('releaseDate', {
                       required: true
@@ -219,7 +224,7 @@ const BookForm = ({ action, book }: FormComponentProps) => {
                   <input
                     type="checkbox"
                     id="Published"
-                    // defaultValue={category?.name}
+                    defaultChecked={book?.published}
                     className="focus:ring-indigo-500 focus:border-indigo-500 p-2 mx-2 border-gray-300 mb-2"
                     {...register('published', {
                       required: true
@@ -233,18 +238,23 @@ const BookForm = ({ action, book }: FormComponentProps) => {
                 Supplier
                 <select
                   id="Supplier"
-                  // defaultValue={category?.name}
                   className="focus:ring-indigo-500 focus:border-indigo-500 block w-full  pl-4 pr-7 sm:text-md border-gray-300 rounded-md"
                   {...register('supplier', {
                     required: true
                   })}
                 >
+                  {book?.supplier && (
+                    <option className="text-gray-800" value={book.supplier['@id']}>
+                      {book.supplier.contactName}
+                    </option>
+                  )}
                   <option hidden className="text-gray-400">
                     select a supplier...
                   </option>
                   {suppliersList?.['hydra:member'].map((supplier) => {
                     return (
-                      'contactName' in supplier && (
+                      'contactName' in supplier &&
+                      supplier.contactName !== book?.supplier.contactName && (
                         <option className="text-gray-800" key={supplier.id} value={supplier['@id']}>
                           {supplier.contactName}
                         </option>
@@ -275,7 +285,7 @@ const BookForm = ({ action, book }: FormComponentProps) => {
           </div>
           <div className=" w-4/5 md:w-3/5 lg:w-2/5 mx-auto grid grid-cols-2 gap-3 ">
             <Button handler={show}>{action}</Button>
-            <Link to="/admin/categories" replace>
+            <Link to="/admin/books" replace>
               <LinkSpan link="/admin/books">List</LinkSpan>
             </Link>
           </div>

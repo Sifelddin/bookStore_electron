@@ -30,7 +30,6 @@ const ListCategories = () => {
   }, [category, confirmed]);
 
   const { loading, data } = categories;
-  console.log(data);
 
   if (loading) {
     return <Spinner />;

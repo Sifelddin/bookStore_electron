@@ -35,7 +35,7 @@ const ListFrame = ({ method, children, data, newItem }: Props) => {
           </div>
         </div>
       </div>
-      <Modal method={method} />
+      <Modal action={method} />
     </div>
   );
 };
