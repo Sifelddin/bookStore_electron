@@ -19,11 +19,11 @@ const ConfirmContext = ({ children }: { children: React.ReactNode }) => {
 
   const confirmation = useMemo(() => {
     return { confirmed, setConfirmed };
-  }, [confirmed, setConfirmed]);
+  }, [confirmed]);
 
   const modal = useMemo(() => {
     return { showModal, setShowModal };
-  }, [showModal, setShowModal]);
+  }, [showModal]);
 
   return (
     <showModalContext.Provider value={modal}>

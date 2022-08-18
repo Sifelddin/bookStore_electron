@@ -64,7 +64,7 @@ const ListBooks = () => {
                       />
                     </td>
                     <Td>{booK.title}</Td>
-                    <Td>{booK.price}</Td>
+                    <Td>{`${booK.price}€`}</Td>
                     <Td>{booK.stock}</Td>
                     <Td>{booK.published ? 'yes' : 'no'}</Td>
                     <td className="grid grid-cols-2 items-center px-6 py-4 whitespace-nowrap text-sm font-medium">

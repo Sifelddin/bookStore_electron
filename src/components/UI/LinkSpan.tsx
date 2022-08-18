@@ -23,6 +23,8 @@ const LinkSpan = ({ link, children }: ToListProps) => {
       case '/admin/suppliers':
       case '/admin/categories':
       case '/admin/books':
+      case 'users/employees':
+      case 'users/clients':
         classes =
           'uppercase text-center inline-block rounded-full bg-gray-700 px-6 py-2 font-semibold text-white shadow-md duration-75 hover:bg-gray-500 w-full';
         break;
