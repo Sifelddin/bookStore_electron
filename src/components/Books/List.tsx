@@ -23,13 +23,14 @@ const ListBooks = () => {
 
   useEffect(() => {
     if (book && confirmed) {
-      postData(deleteMethode, book).then(() => fetchData(url, setBooks));
       setConfirmed?.(false);
+      postData(deleteMethode, book)
+        .then(() => fetchData(url, setBooks))
+        .catch((e) => console.log(e));
     }
   }, [book, confirmed]);
 
   const { loading, data } = books;
-
   if (loading) {
     <Spinner />;
   }

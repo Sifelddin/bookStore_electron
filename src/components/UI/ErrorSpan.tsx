@@ -5,7 +5,7 @@ interface ErrSpanProps {
 }
 
 const ErrorSpan = ({ children }: ErrSpanProps) => {
-  return <span className="text-red-600 text-sm"> {children} </span>;
+  return <span className="text-red-600 text-xs"> {children} </span>;
 };
 
 export default ErrorSpan;

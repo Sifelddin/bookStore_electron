@@ -62,7 +62,7 @@ export interface Content {
 export interface Evalidation {
   code: string;
   message: string;
-  propertyPath: string;
+  propertyPath: keyof FormInputs;
 }
 
 export type File = {

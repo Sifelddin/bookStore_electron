@@ -6,6 +6,7 @@ import { fetchData, inputFormData, postData } from '../../hooks';
 import { FormComponentProps, FormInputs, Content, Evalidation } from '../interfaces';
 import Modal from '../modal';
 import Button from '../UI/Button';
+import ErrorSpan from '../UI/ErrorSpan';
 import Label from '../UI/Label';
 import LinkSpan from '../UI/LinkSpan';
 
@@ -27,25 +28,23 @@ const BookForm = ({ action, book }: FormComponentProps) => {
     formState: { errors }
   } = useForm<FormInputs>();
 
-  const serverErr = (field: any, message: string) => {
+  const serverErr = (field: keyof FormInputs, message: string) => {
     setError(field, { type: `errors server`, message });
   };
   const onSubmit = (data: FormInputs) => {
-    console.log(data);
-
     postData(
       'post',
       book ? `${book['@id']}/image` : '/api/books',
       { 'Content-Type': 'multipart/form-data' },
       inputFormData(data)
     )
-      .then((res) => {
-        console.log(res);
+      .then(() => {
         navigate('/admin/books', { replace: true });
       })
       .catch((e: any) => {
         console.log(e);
         e.response.data?.violations?.map((violation: Evalidation) => {
+          console.log(violation);
           return serverErr(violation.propertyPath, violation.message);
         });
       });
@@ -76,8 +75,8 @@ const BookForm = ({ action, book }: FormComponentProps) => {
                     required: true
                   })}
                 />
-                {/* {errors.name?.type === 'required' && <ErrorSpan>this feild is required</ErrorSpan>}
-                {errors.name?.type === 'errors server' && <ErrorSpan>{errors.name?.message}</ErrorSpan>} */}
+                {errors.title?.type === 'required' && <ErrorSpan>this feild is required</ErrorSpan>}
+                {errors.title?.type === 'errors server' && <ErrorSpan>{errors.title?.message}</ErrorSpan>}
               </Label>
 
               <Label fieldId="Author">
@@ -91,8 +90,8 @@ const BookForm = ({ action, book }: FormComponentProps) => {
                     required: true
                   })}
                 />
-                {/* {errors.name?.type === 'required' && <ErrorSpan>this feild is required</ErrorSpan>}
-                {errors.name?.type === 'errors server' && <ErrorSpan>{errors.name?.message}</ErrorSpan>} */}
+                {errors.author?.type === 'required' && <ErrorSpan>this feild is required</ErrorSpan>}
+                {errors.author?.type === 'errors server' && <ErrorSpan>{errors.author?.message}</ErrorSpan>}
               </Label>
 
               <Label fieldId="Editor">
@@ -106,8 +105,8 @@ const BookForm = ({ action, book }: FormComponentProps) => {
                     required: true
                   })}
                 />
-                {/* {errors.name?.type === 'required' && <ErrorSpan>this feild is required</ErrorSpan>}
-                {errors.name?.type === 'errors server' && <ErrorSpan>{errors.name?.message}</ErrorSpan>} */}
+                {errors.editor?.type === 'required' && <ErrorSpan>this feild is required</ErrorSpan>}
+                {errors.editor?.type === 'errors server' && <ErrorSpan>{errors.editor?.message}</ErrorSpan>}
               </Label>
 
               <Label fieldId="Description">
@@ -121,8 +120,8 @@ const BookForm = ({ action, book }: FormComponentProps) => {
                     required: true
                   })}
                 />
-                {/* {errors.name?.type === 'required' && <ErrorSpan>this feild is required</ErrorSpan>}
-                {errors.name?.type === 'errors server' && <ErrorSpan>{errors.name?.message}</ErrorSpan>} */}
+                {errors.description?.type === 'required' && <ErrorSpan>this feild is required</ErrorSpan>}
+                {errors.description?.type === 'errors server' && <ErrorSpan>{errors.description?.message}</ErrorSpan>}
               </Label>
 
               <Label fieldId="Price">
@@ -136,8 +135,8 @@ const BookForm = ({ action, book }: FormComponentProps) => {
                     required: true
                   })}
                 />
-                {/* {errors.name?.type === 'required' && <ErrorSpan>this feild is required</ErrorSpan>}
-                {errors.name?.type === 'errors server' && <ErrorSpan>{errors.name?.message}</ErrorSpan>} */}
+                {errors.price?.type === 'required' && <ErrorSpan>this feild is required</ErrorSpan>}
+                {errors.price?.type === 'errors server' && <ErrorSpan>{errors.price?.message}</ErrorSpan>}
               </Label>
             </div>
 
@@ -153,14 +152,16 @@ const BookForm = ({ action, book }: FormComponentProps) => {
                     required: true
                   })}
                 >
-                  {book && (
+                  {book?.category && (
                     <option className="text-gray-800" value={book.category['@id']}>
                       {book.category.name}
                     </option>
                   )}
-                  <option className="text-gray-400" hidden>
-                    select a category...
-                  </option>
+                  {action === 'create' && (
+                    <option className="text-gray-400" hidden>
+                      select a category...
+                    </option>
+                  )}
                   {categoriesList?.['hydra:member'].map((category) => {
                     return (
                       'name' in category &&
@@ -172,8 +173,8 @@ const BookForm = ({ action, book }: FormComponentProps) => {
                     );
                   })}
                 </select>
-                {/* {errors.name?.type === 'required' && <ErrorSpan>this feild is required</ErrorSpan>}
-                {errors.name?.type === 'errors server' && <ErrorSpan>{errors.name?.message}</ErrorSpan>} */}
+                {errors.category?.type === 'required' && <ErrorSpan>this feild is required</ErrorSpan>}
+                {errors.category?.type === 'errors server' && <ErrorSpan>{errors.category?.message}</ErrorSpan>}
               </Label>
 
               <Label fieldId="Stock">
@@ -187,8 +188,8 @@ const BookForm = ({ action, book }: FormComponentProps) => {
                     required: true
                   })}
                 />
-                {/* {errors.name?.type === 'required' && <ErrorSpan>this feild is required</ErrorSpan>}
-                {errors.name?.type === 'errors server' && <ErrorSpan>{errors.name?.message}</ErrorSpan>} */}
+                {errors.stock?.type === 'required' && <ErrorSpan>this feild is required</ErrorSpan>}
+                {errors.stock?.type === 'errors server' && <ErrorSpan>{errors.stock?.message}</ErrorSpan>}
               </Label>
               <Label fieldId="Stock Alert">
                 Stock
@@ -201,8 +202,8 @@ const BookForm = ({ action, book }: FormComponentProps) => {
                     required: true
                   })}
                 />
-                {/* {errors.name?.type === 'required' && <ErrorSpan>this feild is required</ErrorSpan>}
-                {errors.name?.type === 'errors server' && <ErrorSpan>{errors.name?.message}</ErrorSpan>} */}
+                {errors.stockAlert?.type === 'required' && <ErrorSpan>this feild is required</ErrorSpan>}
+                {errors.stockAlert?.type === 'errors server' && <ErrorSpan>{errors.stockAlert?.message}</ErrorSpan>}
               </Label>
               <div className="flex items-end ">
                 <Label fieldId="Release date">
@@ -216,8 +217,8 @@ const BookForm = ({ action, book }: FormComponentProps) => {
                       required: true
                     })}
                   />
-                  {/* {errors.name?.type === 'required' && <ErrorSpan>this feild is required</ErrorSpan>}
-                {errors.name?.type === 'errors server' && <ErrorSpan>{errors.name?.message}</ErrorSpan>} */}
+                  {errors.releaseDate?.type === 'required' && <ErrorSpan>this feild is required</ErrorSpan>}
+                  {errors.releaseDate?.type === 'errors server' && <ErrorSpan>{errors.releaseDate?.message}</ErrorSpan>}
                 </Label>
                 <Label fieldId="Published">
                   Published
@@ -230,8 +231,6 @@ const BookForm = ({ action, book }: FormComponentProps) => {
                       required: true
                     })}
                   />
-                  {/* {errors.name?.type === 'required' && <ErrorSpan>this feild is required</ErrorSpan>}
-                {errors.name?.type === 'errors server' && <ErrorSpan>{errors.name?.message}</ErrorSpan>} */}
                 </Label>
               </div>
               <Label fieldId="Supplier">
@@ -248,9 +247,11 @@ const BookForm = ({ action, book }: FormComponentProps) => {
                       {book.supplier.contactName}
                     </option>
                   )}
-                  <option hidden className="text-gray-400">
-                    select a supplier...
-                  </option>
+                  {action === 'create' && (
+                    <option hidden className="text-gray-400">
+                      select a supplier...
+                    </option>
+                  )}
                   {suppliersList?.['hydra:member'].map((supplier) => {
                     return (
                       'contactName' in supplier &&
@@ -262,8 +263,8 @@ const BookForm = ({ action, book }: FormComponentProps) => {
                     );
                   })}
                 </select>
-                {/* {errors.name?.type === 'required' && <ErrorSpan>this feild is required</ErrorSpan>}
-                {errors.name?.type === 'errors server' && <ErrorSpan>{errors.name?.message}</ErrorSpan>} */}
+                {errors.contactName?.type === 'required' && <ErrorSpan>this feild is required</ErrorSpan>}
+                {errors.contactName?.type === 'errors server' && <ErrorSpan>{errors.contactName?.message}</ErrorSpan>}
               </Label>
 
               <div className="flex items-center text-lg my-4 md:mb-6 w-full cursor-pointer">
@@ -276,8 +277,8 @@ const BookForm = ({ action, book }: FormComponentProps) => {
                       required: action === 'create'
                     })}
                   />
-                  {/* {errors.imageFile?.type === 'required' && <ErrorSpan>this feild is required</ErrorSpan>}
-                {errors.imageFile?.type === 'errors server' && <ErrorSpan>{errors.imageFile.message}</ErrorSpan>} */}
+                  {errors.imageFile?.type === 'required' && <ErrorSpan>this feild is required</ErrorSpan>}
+                  {errors.imageFile?.type === 'errors server' && <ErrorSpan>{errors.imageFile.message}</ErrorSpan>}
                 </Label>
               </div>
             </div>
