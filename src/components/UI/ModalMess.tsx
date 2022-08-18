@@ -5,12 +5,14 @@ const ModalMess = ({ action }: { action: string }) => {
 
   switch (action) {
     case 'delete':
-      message = 'Do you really want to delete this supplier? This process cannot be undone';
+      message = 'delete process cannot be undone ';
       break;
     case 'put':
+    case 'update':
       message += 'do you confirm your modification ?';
       break;
     case 'post':
+    case 'create':
       message += 'do you confirm your registration ?';
       break;
     default:

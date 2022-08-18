@@ -10,7 +10,11 @@ import LinkSpan from '../UI/LinkSpan';
 import { useModal } from '../../contexts/ConfirmContext';
 import { Evalidation, FormInputs, FormComponentProps } from '../interfaces';
 
-const SupplierForm = ({ supplier, method }: FormComponentProps) => {
+interface SpecificFormComponentProps extends Omit<FormComponentProps, 'method'> {
+  method: string;
+}
+
+const SupplierForm = ({ supplier, method, action }: SpecificFormComponentProps) => {
   const navigate = useNavigate();
   const { setShowModal } = useModal();
 
@@ -63,12 +67,12 @@ const SupplierForm = ({ supplier, method }: FormComponentProps) => {
             </Label>
           </div>
           <div className="w-full grid grid-cols-2 gap-3 ">
-            <Button handler={show}>{method === 'post' ? 'create' : 'updates'}</Button>
+            <Button handler={show}>{action}</Button>
             <Link to="/admin/suppliers" replace>
               <LinkSpan link="/admin/suppliers">List</LinkSpan>
             </Link>
           </div>
-          <Modal method={method} />
+          <Modal action={method} />
         </form>
       </div>
     </div>

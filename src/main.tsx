@@ -14,6 +14,10 @@ import NewBook from './components/Books/New';
 import ShowBook from './components/Books/Show';
 import EditBook from './components/Books/Edit';
 import ListBooks from './components/Books/List';
+import Clients from './components/users/clients/Clients';
+import Employees from './components/users/employees/Employees';
+import ShowClient from './components/users/clients/ShowClient';
+import ShowEmploye from './components/users/employees/ShowEmpl';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -27,10 +31,14 @@ ReactDOM.render(
           <Route path="categories" element={<ListCategories />} />
           <Route path="categories/:id" element={<EditCategories />} />
           <Route path="categories/new" element={<NewCategory />} />
+          <Route path="books" element={<ListBooks />} />
           <Route path="books/new" element={<NewBook />} />
           <Route path="books/:slug/:id" element={<ShowBook />} />
           <Route path="books/:slug/:id/edit" element={<EditBook />} />
-          <Route path="books" element={<ListBooks />} />
+          <Route path="users/clients" element={<Clients />} />
+          <Route path="users/employees" element={<Employees />} />
+          <Route path="users/clients/:id" element={<ShowClient />} />
+          <Route path="users/employees/:id" element={<ShowEmploye />} />
         </Route>
       </Routes>
     </HashRouter>

@@ -12,6 +12,7 @@ const Button = ({ handler, children }: Props) => {
       classes += ' bg-red-500 border-red-500 hover:bg-red-600 ';
       break;
     case 'update':
+    case 'put':
       classes += 'bg-blue-500 border-blue-500 hover:bg-blue-600';
       break;
     case 'Cancel':

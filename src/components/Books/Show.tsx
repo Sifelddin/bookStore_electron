@@ -6,7 +6,7 @@ import Tr from './UI/Tr';
 import Button from './UI/button';
 import Modal from '../modal';
 import { useConfirmation, useModal } from '../../contexts/ConfirmContext';
-import { Content } from './types';
+import { BookFetch } from '../interfaces';
 
 const ShowBook = () => {
   const { confirmed, setConfirmed } = useConfirmation();
@@ -14,7 +14,7 @@ const ShowBook = () => {
   const { setShowModal } = useModal();
   const { id } = useParams();
   const location = useNavigate();
-  const [book, setBook] = useState<Content>({ loading: true, data: undefined });
+  const [book, setBook] = useState<BookFetch>({ loading: true, data: undefined });
 
   useEffect(() => {
     fetchData(`/api/books/${id}`, setBook);
@@ -35,7 +35,7 @@ const ShowBook = () => {
 
   return (
     <div className=" m-auto w-4/5 bg-white mt-6 shadow-md">
-      {data && (
+      {data && 'title' in data && (
         <div className="block lg:grid lg:grid-cols-2 lg:justify-between p-2 gap-2">
           <div
             className="
@@ -75,7 +75,7 @@ const ShowBook = () => {
         <Link to="../books">
           <Button color="gray"> back to list </Button>
         </Link>
-        <Link to="./edit" state={book}>
+        <Link to="./edit" state={data}>
           <Button color="blue"> Edit </Button>
         </Link>
         <button

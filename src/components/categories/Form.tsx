@@ -8,10 +8,10 @@ import Label from '../UI/Label';
 import ErrorSpan from '../UI/ErrorSpan';
 import LinkSpan from '../UI/LinkSpan';
 import { useModal } from '../../contexts/ConfirmContext';
-import { Evalidation, FormInputs, Content, FormComponentProps } from '../interfaces';
+import { Evalidation, FormInputs, ContentList, FormComponentProps } from '../interfaces';
 
 const CategoryForm = ({ category, action }: FormComponentProps) => {
-  const [categoriesParent, setCategoriesParent] = useState<Content>({ loading: true, data: undefined });
+  const [categoriesParent, setCategoriesParent] = useState<ContentList>({ loading: true, data: undefined });
   const navigate = useNavigate();
   const { setShowModal } = useModal();
 

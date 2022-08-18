@@ -36,7 +36,49 @@ export interface Book {
   supplier: Supplier;
   updateAt: string;
   createdAt: string;
+  bookOrders: string[];
 }
+
+export type User = {
+  '@id': string;
+  id: number;
+  email: string;
+  roles: string[];
+  firstname: string;
+  lastname: string;
+  address: string;
+  zipCode: string;
+  city: string;
+  phone: string;
+  Coef: string;
+  private: boolean;
+  orders: Order[];
+};
+
+export type Order = {
+  '@id': string;
+  '@type': string;
+  billAddress: string;
+  billCity: string;
+  billZipCode: string;
+  bookOrders: BookOrders[];
+  coef: string;
+  id: number;
+  orderDate: string;
+  paymentDate: string;
+  shipAddress: string;
+  shipCity: string;
+  shipZipCode: string;
+  payMethod: string;
+};
+
+export type BookOrders = {
+  '@id': string;
+  '@type': string;
+  book: Book;
+  quantity: number;
+  unitPrice: string;
+};
 export interface View {
   '@id': string;
   '@type': string;
@@ -50,11 +92,11 @@ export type Data = {
   '@context': string;
   '@id': string;
   '@type': string;
-  'hydra:member': (Category | Supplier | Book)[];
+  'hydra:member': (Category | Supplier | Book | User)[];
   'hydra:totalItems': number;
   'hydra:view': View;
 };
-export interface Content {
+export interface ContentList {
   loading: boolean;
   data: Data | undefined;
 }
@@ -98,3 +140,25 @@ export interface FormComponentProps {
   supplier?: Supplier;
   category?: Category;
 }
+
+export type BookFetch = {
+  loading: boolean;
+  data: Book | undefined;
+};
+export type SupplierFetch = {
+  loading: boolean;
+  data: Supplier | undefined;
+};
+export type CategoryFetch = {
+  loading: boolean;
+  data: Category | undefined;
+};
+export type UserFetch = {
+  loading: boolean;
+  data: User | undefined;
+};
+
+export type OrderFetch = {
+  loading: boolean;
+  data: Order | undefined;
+};

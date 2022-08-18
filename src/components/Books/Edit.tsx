@@ -3,22 +3,26 @@ import { useLocation, useParams } from 'react-router-dom';
 import { fetchData } from '../../hooks';
 import Spinner from '../UI/Spinner';
 import BookForm from './Form';
-import { Content } from './types';
+import { BookFetch, Book } from '../interfaces';
 
 const EditBook = () => {
   const { id } = useParams();
-  const [book, setBook] = useState<Content>({ loading: true, data: undefined });
+  const [book, setBook] = useState<BookFetch>({ loading: true, data: undefined });
 
   const { state } = useLocation();
+  console.log(state);
+
   useEffect(() => {
     if (state) {
-      const stateData = state as Content;
-      setBook(stateData);
+      const stateData = state as Book;
+      setBook({ loading: false, data: stateData });
     } else {
       fetchData(`/api/books/${id}`, setBook);
     }
   }, [state]);
+
   const { loading, data } = book;
+
   if (loading) {
     return <Spinner />;
   }

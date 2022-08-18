@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { useModal } from '../../contexts/ConfirmContext';
 import { fetchData, inputFormData, postData } from '../../hooks';
-import { FormComponentProps, FormInputs, Content, Evalidation } from '../interfaces';
+import { FormComponentProps, FormInputs, ContentList, Evalidation } from '../interfaces';
 import Modal from '../modal';
 import Button from '../UI/Button';
 import ErrorSpan from '../UI/ErrorSpan';
@@ -11,8 +11,8 @@ import Label from '../UI/Label';
 import LinkSpan from '../UI/LinkSpan';
 
 const BookForm = ({ action, book }: FormComponentProps) => {
-  const [categories, setCategories] = useState<Content>({ loading: true, data: undefined });
-  const [suppliers, setSuppliers] = useState<Content>({ loading: true, data: undefined });
+  const [categories, setCategories] = useState<ContentList>({ loading: true, data: undefined });
+  const [suppliers, setSuppliers] = useState<ContentList>({ loading: true, data: undefined });
   const { setShowModal } = useModal();
 
   const navigate = useNavigate();
@@ -44,7 +44,6 @@ const BookForm = ({ action, book }: FormComponentProps) => {
       .catch((e: any) => {
         console.log(e);
         e.response.data?.violations?.map((violation: Evalidation) => {
-          console.log(violation);
           return serverErr(violation.propertyPath, violation.message);
         });
       });
@@ -227,9 +226,7 @@ const BookForm = ({ action, book }: FormComponentProps) => {
                     id="Published"
                     defaultChecked={book?.published}
                     className="focus:ring-indigo-500 focus:border-indigo-500 p-2 mx-2 border-gray-300 mb-2"
-                    {...register('published', {
-                      required: true
-                    })}
+                    {...register('published')}
                   />
                 </Label>
               </div>

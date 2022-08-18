@@ -5,22 +5,24 @@ import LinkSpan from './LinkSpan';
 import { Data } from '../interfaces';
 
 interface Props {
-  method: string;
+  method?: string;
   children: React.ReactNode;
   data?: Data;
-  newItem: string;
+  newItem?: string;
 }
 
 const ListFrame = ({ method, children, data, newItem }: Props) => {
   return (
-    <div className="py-12 col-span-4 self-center h-screen ">
+    <div className="py-12 col-span-4 self-center h-auto ">
       <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-          <div className="p-6 bg-white border-b border-gray-200">
-            <Link to="new">
-              <LinkSpan link="new">Create new {newItem}</LinkSpan>
-            </Link>
-          </div>
+          {newItem && (
+            <div className="p-6 bg-white border-b border-gray-200">
+              <Link to="new">
+                <LinkSpan link="new">Create new {newItem}</LinkSpan>
+              </Link>
+            </div>
+          )}
         </div>
         <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
           <div className="flex flex-col">
@@ -35,7 +37,7 @@ const ListFrame = ({ method, children, data, newItem }: Props) => {
           </div>
         </div>
       </div>
-      <Modal action={method} />
+      {method && <Modal action={method} />}
     </div>
   );
 };
