@@ -31,12 +31,14 @@ const ListUsers = ({ isClient }: { isClient: boolean }) => {
             <Th>Email</Th>
             <Th>Phone number</Th>
             <Th>fullAddress</Th>
-            <Th>Status</Th>
+            {isClient && <Th>Status</Th>}
             <Th>actions</Th>
           </tr>
         </thead>
         <tbody>
           {data?.['hydra:member'].map((user) => {
+            console.log(user);
+
             return (
               'email' in user && (
                 <tr key={user.id}>
@@ -45,10 +47,15 @@ const ListUsers = ({ isClient }: { isClient: boolean }) => {
                   <Td>{user.email}</Td>
                   <Td>{user.phone}</Td>
                   <Td>{`${user.address} ${user.city} ${user.zipCode}`}</Td>
-                  <td className="text-green-700">{user.private ? 'private' : 'professional'}</td>
+                  {isClient && <td className="text-green-700">{user.private ? 'private' : 'professional'}</td>}
                   <td className="grid grid-cols-2 items-center px-6 py-4 whitespace-nowrap text-sm font-medium">
-                    <Link to={`${user.id}`}>
-                      <LinkSpan link={`${user.id}`}>details</LinkSpan>
+                    {(user?.private === true || user?.private === false) && (
+                      <Link to={`${user.id}/orders`}>
+                        <LinkSpan link={`${user.id}`}>orders</LinkSpan>
+                      </Link>
+                    )}
+                    <Link to={`../users/${user.id}/edit`}>
+                      <LinkSpan link={`${user.id}`}>edit</LinkSpan>
                     </Link>
                   </td>
                 </tr>

@@ -6,7 +6,7 @@ import { UserFetch } from '../../interfaces';
 import OrderDetailts from './OrderDetails';
 import Th, { Td } from '../../UI/Th';
 
-const ShowClient = () => {
+const Orders = () => {
   const [client, setClient] = useState<UserFetch>({ loading: true, data: undefined });
   const [orderId, setOrderId] = useState<string | null>('');
 
@@ -57,4 +57,4 @@ const ShowClient = () => {
   );
 };
 
-export default ShowClient;
+export default Orders;
