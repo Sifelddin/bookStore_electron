@@ -8,8 +8,8 @@ import Pagination from '../../UI/Pagination';
 import Spinner from '../../UI/Spinner';
 import Th, { Td } from '../../UI/Th';
 
-const ListUsers = ({ isClient }: { isClient: boolean }) => {
-  const [url, setUrl] = useState(`/api/users?exists%5Bprivate%5D=${isClient}`);
+const ListUsers = ({ endPoint, status }: { endPoint: string; status: string }) => {
+  const [url, setUrl] = useState(endPoint);
   const [users, setUsers] = useState<ContentList>({ loading: true, data: undefined });
 
   useEffect(() => {
@@ -19,7 +19,7 @@ const ListUsers = ({ isClient }: { isClient: boolean }) => {
   const { loading, data } = users;
 
   if (loading) {
-    <Spinner />;
+    return <Spinner />;
   }
   return (
     <ListFrame data={data}>
@@ -31,14 +31,12 @@ const ListUsers = ({ isClient }: { isClient: boolean }) => {
             <Th>Email</Th>
             <Th>Phone number</Th>
             <Th>fullAddress</Th>
-            {isClient && <Th>Status</Th>}
+            <Th>Status</Th>
             <Th>actions</Th>
           </tr>
         </thead>
         <tbody>
           {data?.['hydra:member'].map((user) => {
-            console.log(user);
-
             return (
               'email' in user && (
                 <tr key={user.id}>
@@ -47,14 +45,14 @@ const ListUsers = ({ isClient }: { isClient: boolean }) => {
                   <Td>{user.email}</Td>
                   <Td>{user.phone}</Td>
                   <Td>{`${user.address} ${user.city} ${user.zipCode}`}</Td>
-                  {isClient && <td className="text-green-700">{user.private ? 'private' : 'professional'}</td>}
+                  <td className="text-green-700">{status}</td>
                   <td className="grid grid-cols-2 items-center px-6 py-4 whitespace-nowrap text-sm font-medium">
                     {(user?.private === true || user?.private === false) && (
                       <Link to={`${user.id}/orders`}>
                         <LinkSpan link={`${user.id}`}>orders</LinkSpan>
                       </Link>
                     )}
-                    <Link to={`../users/${user.id}/edit`}>
+                    <Link to={`${user.id}/edit`} state={user}>
                       <LinkSpan link={`${user.id}`}>edit</LinkSpan>
                     </Link>
                   </td>

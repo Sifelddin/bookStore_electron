@@ -1,16 +1,16 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useModal } from '../../../contexts/ConfirmContext';
-import { User } from '../../interfaces';
+import { FormInputs, User } from '../../interfaces';
 import Modal from '../../modal';
 import Button from '../../UI/Button';
 import Label from '../../UI/Label';
 
 const Form = ({ user }: { user: User | undefined }) => {
   const { setShowModal } = useModal();
-  const { register, errors, handleSubmit } = useForm();
+  const { register, errors, handleSubmit } = useForm<FormInputs>();
 
-  const onSubmit = (data: any) => {
+  const onSubmit = (data) => {
     console.log(data);
   };
   const show = (e: MouseEvent) => {
@@ -28,9 +28,7 @@ const Form = ({ user }: { user: User | undefined }) => {
               {...register('private')}
               id="status"
             >
-              <option value="" hidden>
-                select a user status
-              </option>
+              <option hidden>select a user status</option>
               <option value="private">private</option>
               <option value="pemployee"> employee</option>
               <option value="professional"> professional</option>

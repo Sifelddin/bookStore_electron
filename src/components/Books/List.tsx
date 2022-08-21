@@ -33,7 +33,7 @@ const ListBooks = () => {
 
   const { loading, data } = books;
   if (loading) {
-    <Spinner />;
+    return <Spinner />;
   }
 
   return (

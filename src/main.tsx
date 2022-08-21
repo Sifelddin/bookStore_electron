@@ -14,10 +14,11 @@ import NewBook from './components/Books/New';
 import ShowBook from './components/Books/Show';
 import EditBook from './components/Books/Edit';
 import ListBooks from './components/Books/List';
-import Clients from './components/users/clients/Clients';
 import Employees from './components/users/employees/Employees';
 import ShowUser from './components/users/components/ShowUser';
 import Orders from './components/users/clients/orders';
+import Privates from './components/users/clients/privates';
+import Profs from './components/users/clients/Profs';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -35,10 +36,14 @@ ReactDOM.render(
           <Route path="books/new" element={<NewBook />} />
           <Route path="books/:slug/:id" element={<ShowBook />} />
           <Route path="books/:slug/:id/edit" element={<EditBook />} />
-          <Route path="users/clients" element={<Clients />} />
+          <Route path="users/privates" element={<Privates />} />
+          <Route path="users/professionals" element={<Profs />} />
           <Route path="users/employees" element={<Employees />} />
-          <Route path="users/clients/:id/orders" element={<Orders />} />
-          <Route path="users/:id/edit" element={<ShowUser />} />
+          <Route path="users/privates/:id/orders" element={<Orders />} />
+          <Route path="users/professionals/:id/orders" element={<Orders />} />
+          <Route path="users/employees/:id/edit" element={<ShowUser />} />
+          <Route path="users/professionals/:id/edit" element={<ShowUser />} />
+          <Route path="users/privates/:id/edit" element={<ShowUser />} />
         </Route>
       </Routes>
     </HashRouter>

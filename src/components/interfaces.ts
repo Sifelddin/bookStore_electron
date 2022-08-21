@@ -70,6 +70,7 @@ export type Order = {
   shipCity: string;
   shipZipCode: string;
   payMethod: string;
+  discount: string;
 };
 
 export type BookOrders = {
@@ -131,6 +132,11 @@ export interface FormInputs {
   published: boolean;
   supplier: string;
   releaseDate: string;
+  paymentDate: string;
+  discount: string;
+  private: boolean;
+  roles: string;
+  Coef: string;
 }
 
 export interface FormComponentProps {

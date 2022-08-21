@@ -16,7 +16,6 @@ const Orders = () => {
   }, []);
 
   const { loading, data } = client;
-  console.log(data);
 
   if (loading) {
     return <Spinner />;
@@ -25,6 +24,21 @@ const Orders = () => {
   return (
     <div className="h-screen flex flex-col justify-start items-center ">
       <div className="mx-auto w-4/5 bg-white mt-6">
+        <div className="grid grid-cols-2 py-3">
+          <div className="col-span-1 flex justify-start space-x-3 px-2">
+            <span className="text-black font-semibold">
+              ID : <span className="text-gray-600 font-normal"> {data?.id}</span>
+            </span>
+            <span className="text-black font-semibold">
+              FullName : <span className="text-gray-600 font-normal"> {`${data?.firstname} ${data?.lastname}`}</span>
+            </span>
+          </div>
+          <div className="col-span-1 flex justify-end px-2 ">
+            <span className="text-right text-black font-semibold">
+              Orders Total : <span className="text-gray-600 font-normal"> {data?.orders.length}</span>
+            </span>
+          </div>
+        </div>
         <table className="pb-2 w-full p-3 shadow-md">
           <thead className="bg-orange-50 shadow-sm">
             <tr>
@@ -52,7 +66,7 @@ const Orders = () => {
           </tbody>
         </table>
       </div>
-      {orderId && <OrderDetailts orderId={orderId} />}
+      {orderId && <OrderDetailts orderId={orderId} isPrivate={data?.private} />}
     </div>
   );
 };

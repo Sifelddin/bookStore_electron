@@ -6,7 +6,7 @@ const Employees = () => {
   return (
     <>
       <Title>List of Employees</Title>
-      <ListUsers isClient={false} />
+      <ListUsers endPoint="/api/users?exists%5Bprivate%5D=false" status="employee" />
     </>
   );
 };
