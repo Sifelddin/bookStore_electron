@@ -116,7 +116,7 @@ const OrderDetailts = ({ orderId, isPrivate }: { orderId: string; isPrivate: boo
                   </tr>
                   <tr className="flex justify-between my-1">
                     <th className="text-sm"> Total :</th>
-                    <td>{finalTotal(data, 10 / 100)}€</td>
+                    <td>{finalTotal(data, 10 / 100).toFixed(2)}€</td>
                   </tr>
                 </tbody>
               </table>

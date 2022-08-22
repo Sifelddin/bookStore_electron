@@ -19,6 +19,7 @@ import ShowUser from './components/users/components/ShowUser';
 import Orders from './components/users/clients/orders';
 import Privates from './components/users/clients/privates';
 import Profs from './components/users/clients/Profs';
+import Wrapper from './components/dashboard/Wrapper';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -26,6 +27,7 @@ ReactDOM.render(
       <Routes>
         <Route index element={<Home />} />
         <Route path="admin" element={<App />}>
+          <Route path="dashboard" element={<Wrapper />} />
           <Route path="suppliers" element={<Suppliers />} />
           <Route path="suppliers/new" element={<NewSupplier />} />
           <Route path="suppliers/:id" element={<EditSupplier />} />
