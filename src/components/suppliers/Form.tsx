@@ -41,8 +41,8 @@ const SupplierForm = ({ supplier, method, action }: SpecificFormComponentProps) 
     return data;
   };
 
-  const show = (e: Event) => {
-    e.preventDefault();
+  const show = (e?: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e?.preventDefault();
     setShowModal?.(true);
   };
 

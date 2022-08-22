@@ -53,8 +53,8 @@ const CategoryForm = ({ category, action }: FormComponentProps) => {
 
   const { data } = categoriesParent;
 
-  const show = (e: MouseEvent) => {
-    e.preventDefault();
+  const show: (e?: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void = (e) => {
+    e?.preventDefault();
     setShowModal?.(true);
   };
 

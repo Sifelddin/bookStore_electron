@@ -5,6 +5,7 @@ import Spinner from '../../UI/Spinner';
 import { UserFetch } from '../../interfaces';
 import OrderDetailts from './OrderDetails';
 import Th, { Td } from '../../UI/Th';
+import Title from '../../UI/Title';
 
 const Orders = () => {
   const [client, setClient] = useState<UserFetch>({ loading: true, data: undefined });
@@ -23,6 +24,7 @@ const Orders = () => {
 
   return (
     <div className="h-screen flex flex-col justify-start items-center ">
+      <Title> List of Orders </Title>
       <div className="mx-auto w-4/5 bg-white mt-6">
         <div className="grid grid-cols-2 py-3">
           <div className="col-span-1 flex justify-start space-x-3 px-2">

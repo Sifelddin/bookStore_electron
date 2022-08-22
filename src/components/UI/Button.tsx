@@ -2,7 +2,7 @@ import React from 'react';
 
 interface Props {
   children: string;
-  handler: (e?: any) => void;
+  handler: (e?: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }
 const Button = ({ handler, children }: Props) => {
   let classes =

@@ -1,20 +1,30 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useModal } from '../../../contexts/ConfirmContext';
+import { postData } from '../../../hooks';
 import { FormInputs, User } from '../../interfaces';
 import Modal from '../../modal';
 import Button from '../../UI/Button';
 import Label from '../../UI/Label';
+import { getStatus, statusData } from '../helpers';
 
 const Form = ({ user }: { user: User | undefined }) => {
+  const [editStatus, setEditStatus] = useState(false);
   const { setShowModal } = useModal();
-  const { register, errors, handleSubmit } = useForm<FormInputs>();
+  const { register, handleSubmit } = useForm<FormInputs>();
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = (data: FormInputs) => {
+    if (user) {
+      postData(
+        'patch',
+        `${user['@id']}/status`,
+        { 'Content-Type': 'application/merge-patch+json' },
+        statusData(data)
+      ).then((res) => console.log(res));
+    }
   };
-  const show = (e: MouseEvent) => {
-    e.preventDefault();
+  const show = (e?: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e?.preventDefault();
     setShowModal?.(true);
   };
   return (
@@ -22,17 +32,28 @@ const Form = ({ user }: { user: User | undefined }) => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="flex items-center text-lg mb-2 md:mb-6 w-full">
           <Label fieldId="status">
-            Status :
-            <select
-              className="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-4 pr-7 sm:text-md border-gray-300 rounded-md"
-              {...register('private')}
-              id="status"
+            Status ({getStatus(user)}) :{' '}
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                setEditStatus(!editStatus);
+              }}
+              className="bg-blue-100 px-2 rounded-lg m-1 hover:bg-blue-200 hover:text-black"
             >
-              <option hidden>select a user status</option>
-              <option value="private">private</option>
-              <option value="pemployee"> employee</option>
-              <option value="professional"> professional</option>
-            </select>
+              edit
+            </button>
+            {editStatus && (
+              <select
+                className="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-4 pr-7 sm:text-md border-gray-300 rounded-md"
+                {...register('private')}
+                id="status"
+              >
+                <option hidden>select a user status</option>
+                <option value="private">private</option>
+                <option value="employee"> employee</option>
+                <option value="professional"> professional</option>
+              </select>
+            )}
           </Label>
         </div>
         {user?.private === true || user?.private === false || (

@@ -52,8 +52,8 @@ const BookForm = ({ action, book }: FormComponentProps) => {
   const { data: categoriesList } = categories;
   const { data: suppliersList } = suppliers;
 
-  const show = (e: MouseEvent) => {
-    e.preventDefault();
+  const show = (e?: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e?.preventDefault();
     setShowModal?.(true);
   };
 

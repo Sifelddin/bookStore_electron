@@ -11,9 +11,9 @@ const Modal = ({ action }: Props) => {
   const { setConfirmed } = useConfirmation();
   const { showModal, setShowModal } = useModal();
 
-  const cancel = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const cancel = (e?: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     setShowModal?.(false);
-    e.preventDefault();
+    e?.preventDefault();
   };
 
   let confirmation;

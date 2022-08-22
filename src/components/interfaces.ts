@@ -132,9 +132,9 @@ export interface FormInputs {
   published: boolean;
   supplier: string;
   releaseDate: string;
-  paymentDate: string;
+  paymentDate?: string;
   discount: string;
-  private: boolean;
+  private: string | undefined | boolean | null;
   roles: string;
   Coef: string;
 }

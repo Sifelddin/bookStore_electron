@@ -62,7 +62,7 @@ const ShowUser = () => {
               <tr>
                 <th className="text-left uppercase">Roles :</th>
                 {data?.roles.map((role) => {
-                  return <td>{role}</td>;
+                  return <td key={role}>{role}</td>;
                 })}
               </tr>
             </tbody>
