@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { fetchData } from '../../../hooks';
 import Spinner from '../../UI/Spinner';
 import { UserFetch } from '../../interfaces';
@@ -23,7 +23,7 @@ const Orders = () => {
   }
 
   return (
-    <div className="h-screen flex flex-col justify-start items-center ">
+    <div className=" flex flex-col justify-start items-center ">
       <Title> List of Orders </Title>
       <div className="mx-auto w-4/5 bg-white mt-6">
         <div className="grid grid-cols-2 py-3">
@@ -65,6 +65,16 @@ const Orders = () => {
                 </tr>
               );
             })}
+            <tr>
+              <td colSpan={4} className=" p-2 text-center  ">
+                <Link
+                  className="bg-gray-600 text-xs p-1 m-1 rounded-md text-white uppercase font-semibold hover:bg-gray-800 duration-200"
+                  to="./../../"
+                >
+                  Back to List
+                </Link>
+              </td>
+            </tr>
           </tbody>
         </table>
       </div>

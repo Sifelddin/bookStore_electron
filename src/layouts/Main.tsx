@@ -5,7 +5,7 @@ interface Props {
 }
 
 const Main = ({ children }: Props) => {
-  return <div className="w-full h-full">{children}</div>;
+  return <div className="w-full ml-60 ">{children}</div>;
 };
 
 export default Main;

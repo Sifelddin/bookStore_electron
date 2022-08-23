@@ -6,9 +6,8 @@ import Main from '../layouts/Main';
 
 const App = () => {
   return (
-    <div className="bg-blue-50 h-full w-screen flex flex-row">
+    <div className="bg-blue-50 min-h-screen w-screen flex flex-row relative ">
       <Aside />
-
       <ConfirmContext>
         <Main>
           <Outlet />

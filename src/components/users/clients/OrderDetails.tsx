@@ -13,13 +13,14 @@ const OrderDetailts = ({ orderId, isPrivate }: { orderId: string; isPrivate: boo
   });
   const [editDiscount, setEditDiscount] = useState(false);
   const [editPayDate, setEditPayDate] = useState(false);
+  const [submited, setSubmited] = useState(false);
 
   useEffect(() => {
     setOrderDetailes({ loading: false, data: undefined });
     if (orderId) {
       fetchData(orderId, setOrderDetailes);
     }
-  }, [orderId]);
+  }, [orderId, submited]);
 
   const { loading, data } = orderDetailes;
 
@@ -28,7 +29,7 @@ const OrderDetailts = ({ orderId, isPrivate }: { orderId: string; isPrivate: boo
   }
 
   return (
-    <div className=" w-4/5 bg-white mt-6 shadow-md">
+    <div className=" w-4/5 bg-white my-4 shadow-md">
       {data && (
         <div className="grid grid-cols-2 justify-between p-2 gap-2">
           <div className=" col-span-1">
@@ -75,7 +76,7 @@ const OrderDetailts = ({ orderId, isPrivate }: { orderId: string; isPrivate: boo
               </tbody>
             </table>
             {isPrivate === false && !data.paymentDate && (
-              <OrderForm isPrivate={isPrivate} order={data} editPayDate={editPayDate} editDiscount={editDiscount} />
+              <OrderForm order={data} editPayDate={editPayDate} editDiscount={editDiscount} setSubmited={setSubmited} />
             )}
           </div>
           <div className=" col-span-1">

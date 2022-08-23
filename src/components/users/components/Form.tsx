@@ -38,7 +38,7 @@ const Form = ({ user }: { user: User | undefined }) => {
                 e.preventDefault();
                 setEditStatus(!editStatus);
               }}
-              className="bg-blue-100 px-2 rounded-lg m-1 hover:bg-blue-200 hover:text-black"
+              className="bg-blue-100 duration-200  rounded-lg m-1 hover:bg-blue-700 hover:text-white uppercase text-sm text-blue-900 px-2 py-1 font-semibold"
             >
               edit
             </button>

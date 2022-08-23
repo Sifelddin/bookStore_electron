@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import { useForm } from 'react-hook-form';
 import { useModal } from '../../../contexts/ConfirmContext';
 import { postData } from '../../../hooks';
@@ -9,13 +9,13 @@ import ErrorSpan from '../../UI/ErrorSpan';
 import Label from '../../UI/Label';
 
 type Props = {
-  isPrivate: boolean | undefined;
   order: Order | undefined;
   editPayDate: boolean;
   editDiscount: boolean;
+  setSubmited: Dispatch<SetStateAction<boolean>>;
 };
 
-const OrderForm = ({ order, editPayDate, editDiscount }: Props) => {
+const OrderForm = ({ order, editPayDate, editDiscount, setSubmited }: Props) => {
   const {
     handleSubmit,
     register,
@@ -23,13 +23,15 @@ const OrderForm = ({ order, editPayDate, editDiscount }: Props) => {
   } = useForm<FormInputs>();
   const { setShowModal } = useModal();
   const today = new Date().toISOString().slice(0, 10);
-
+  setSubmited(false);
   function onSubmit(data: FormInputs) {
     const formDate = data;
     if (!editPayDate && data.paymentDate) {
       delete formDate.paymentDate;
     }
-    postData('put', order ? order['@id'] : '', undefined, formDate).then();
+    postData('put', order ? order['@id'] : '', undefined, formDate).then(() => {
+      setSubmited(true);
+    });
   }
 
   const show = (e?: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
