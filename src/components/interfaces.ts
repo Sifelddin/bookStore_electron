@@ -93,7 +93,7 @@ export type Data = {
   '@context': string;
   '@id': string;
   '@type': string;
-  'hydra:member': (Category | Supplier | Book | User)[];
+  'hydra:member': (Category | Supplier | Book | User | Order)[];
   'hydra:totalItems': number;
   'hydra:view': View;
 };
