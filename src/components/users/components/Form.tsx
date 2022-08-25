@@ -1,26 +1,43 @@
-import React, { useState } from 'react';
+import React, { SetStateAction, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useModal } from '../../../contexts/ConfirmContext';
 import { postData } from '../../../hooks';
-import { FormInputs, User } from '../../interfaces';
+import { Evalidation, FormInputs, User } from '../../interfaces';
 import Modal from '../../modal';
 import Button from '../../UI/Button';
+import ErrorSpan from '../../UI/ErrorSpan';
 import Label from '../../UI/Label';
 import { getStatus, statusData } from '../helpers';
 
-const Form = ({ user }: { user: User | undefined }) => {
+type Props = {
+  user: User | undefined;
+  setIsValid: React.Dispatch<SetStateAction<boolean>>;
+};
+
+const Form = ({ user, setIsValid }: Props) => {
   const [editStatus, setEditStatus] = useState(false);
   const { setShowModal } = useModal();
-  const { register, handleSubmit } = useForm<FormInputs>();
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors }
+  } = useForm<FormInputs>();
 
   const onSubmit = (data: FormInputs) => {
+    console.log(data);
+
     if (user) {
-      postData(
-        'patch',
-        `${user['@id']}/status`,
-        { 'Content-Type': 'application/merge-patch+json' },
-        statusData(data)
-      ).then((res) => console.log(res));
+      postData('patch', `${user['@id']}/status`, { 'Content-Type': 'application/merge-patch+json' }, statusData(data))
+        .then(() => setIsValid(true))
+        .catch((e) => {
+          console.log(e);
+          return e.response.data.violations
+            ? e.response.data.violations.map((violation: Evalidation) => {
+                return setError('Coef', { type: 'errors server', message: violation.message });
+              })
+            : setError('Coef', { type: 'errors server', message: 'an server error occurred ' });
+        });
     }
   };
   const show = (e?: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -62,7 +79,7 @@ const Form = ({ user }: { user: User | undefined }) => {
               roles :
               <select
                 className="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-4 pr-7 sm:text-md border-gray-300 rounded-md"
-                {...register('roles')}
+                {...register('roles', { required: true })}
                 id="roles"
               >
                 <option value="ROLE_USER">Client</option>
@@ -82,8 +99,10 @@ const Form = ({ user }: { user: User | undefined }) => {
                 type="text"
                 defaultValue={user.Coef}
                 id="coef"
-                {...register('Coef')}
+                {...register('Coef', { required: true })}
               />
+              {errors.Coef?.type === 'required' && <ErrorSpan>this feild is required</ErrorSpan>}
+              {errors.Coef?.type === 'errors server' && <ErrorSpan>{errors.Coef.message}</ErrorSpan>}
             </Label>
           </div>
         )}

@@ -31,7 +31,6 @@ const SupplierForm = ({ supplier, method, action }: SpecificFormComponentProps) 
       navigate('/admin/suppliers', { replace: true });
     } catch (e: any) {
       console.log(e);
-
       return e.response.data.violations
         ? e.response.data.violations.map((violation: Evalidation) => {
             return setError('contactName', { type: 'errors server', message: violation.message });

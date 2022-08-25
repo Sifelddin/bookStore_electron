@@ -9,17 +9,20 @@ import Tr from './UI/Tr';
 
 const ShowUser = () => {
   const [user, setUser] = useState<UserFetch>({ loading: true, data: undefined });
+  const [isEditValid, setIsValid] = useState(false);
+
   const { id } = useParams();
   const { state } = useLocation();
 
   useEffect(() => {
-    if (state) {
+    if (state && !isEditValid) {
       const stateData = state as User;
       setUser({ loading: false, data: stateData });
     } else {
       fetchData(`api/users/${id}`, setUser);
+      setIsValid(false);
     }
-  }, [state]);
+  }, [state, isEditValid]);
 
   const { loading, data } = user;
   let toListLink = '';
@@ -69,7 +72,7 @@ const ShowUser = () => {
           </table>
 
           <div className="min-h-fit flex sm:justify-center items-center pt-6 sm:pt-0 bg-gray-50 col-span-1">
-            {user && <Form user={data} />}
+            {user && <Form user={data} setIsValid={setIsValid} />}
           </div>
         </div>
         <div className="flex justify-around items-center mt-10">

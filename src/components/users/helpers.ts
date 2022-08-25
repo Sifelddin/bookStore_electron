@@ -27,11 +27,12 @@ export const finalTotal = (order: Order, TVA: number): number => {
 
 type UserStatus = {
   private?: boolean | null;
-  roles: string[];
+  roles?: string[];
+  Coef?: string;
 };
 
 export const statusData = (data: FormInputs) => {
-  const userStatus = { roles: [] } as UserStatus;
+  const userStatus = {} as UserStatus;
   switch (data.private) {
     case 'private':
       userStatus.private = true;
@@ -46,6 +47,9 @@ export const statusData = (data: FormInputs) => {
   }
   if (data.roles) {
     userStatus.roles = new Array(data.roles);
+  }
+  if (data.Coef) {
+    userStatus.Coef = data.Coef;
   }
   return userStatus;
 };

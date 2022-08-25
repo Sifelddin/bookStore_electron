@@ -4,7 +4,7 @@ import { Bar } from 'react-chartjs-2';
 import Spinner from '../../UI/Spinner';
 import { fetchData } from '../../../hooks';
 import { ContentList } from '../../interfaces';
-import { labels, options, years } from '../staticData';
+import { months as labels, years } from '../staticData';
 import setData from '../helpers';
 
 const BarChart = () => {
@@ -36,6 +36,19 @@ const BarChart = () => {
         backgroundColor: 'rgba(255, 99, 132, 0.5)'
       }
     ]
+  };
+
+  const options = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top' as const
+      },
+      title: {
+        display: true,
+        text: 'turnover month by month'
+      }
+    }
   };
 
   return (

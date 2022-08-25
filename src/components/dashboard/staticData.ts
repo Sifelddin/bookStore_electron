@@ -1,4 +1,4 @@
-export const labels = [
+export const months = [
   'January',
   'February',
   'March',
@@ -14,16 +14,3 @@ export const labels = [
 ];
 
 export const years = ['2022', '2021', '2020'];
-
-export const options = {
-  responsive: true,
-  plugins: {
-    legend: {
-      position: 'top' as const
-    },
-    title: {
-      display: true,
-      text: 'Chart.js Bar Chart'
-    }
-  }
-};

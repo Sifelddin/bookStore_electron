@@ -109,7 +109,7 @@ const OrderDetailts = ({ orderId, isPrivate }: { orderId: string; isPrivate: boo
                   </tr>
                   <tr className="flex justify-between w-full my-1">
                     <th className="text-sm">TVA 10%:</th>
-                    <td>+ {totalTVA(data, 10 / 100)}€</td>
+                    <td>+ {totalTVA(data, 10 / 100).toFixed(2)}€</td>
                   </tr>
                   <tr className="flex justify-between border-b-2 my-1">
                     <th className="text-sm">Discount :</th>
