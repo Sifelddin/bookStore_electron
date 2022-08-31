@@ -3,7 +3,7 @@ import { Data } from '../interfaces';
 export default function setData(orders: Data | undefined, index: number) {
   let countTotal = 0;
   let countDiscount = 0;
-  orders?.['hydra:member'].map((bookord) => {
+  orders?.['hydra:member']?.map((bookord) => {
     if ('orderDate' in bookord) {
       const { discount, orderDate, bookOrders } = bookord;
       const ordDate = new Date(orderDate.split('-').reverse().join('-')).getMonth();

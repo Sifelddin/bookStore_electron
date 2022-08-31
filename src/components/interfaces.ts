@@ -137,6 +137,8 @@ export interface FormInputs {
   private: string | undefined | boolean | null;
   roles: string;
   Coef: string;
+  username: string;
+  password: string;
 }
 
 export interface FormComponentProps {

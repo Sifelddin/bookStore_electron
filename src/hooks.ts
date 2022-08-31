@@ -12,13 +12,15 @@ export const baseUrl = import.meta.env.DEV
 
 export const fetchData = async (url: string, callback: (value: any) => void) => {
   const res = await axios.get(url, {
-    baseURL: baseUrl
+    baseURL: baseUrl,
+    headers: { Accept: 'application/json' }
   });
   try {
     callback({ loading: false, data: res.data });
   } catch (err) {
     console.log(err);
   }
+  return res;
 };
 
 // postData function used for the posting data operations : post,delete,put

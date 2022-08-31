@@ -1,7 +1,22 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import { Link, useNavigate } from 'react-router-dom';
+import { FormInputs } from '../components/interfaces';
+import { postData } from '../hooks';
 
 const Home = () => {
+  const navigate = useNavigate();
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors }
+  } = useForm<FormInputs>();
+
+  const onSubmit = (data: FormInputs) => {
+    postData('post', '/api/login', undefined, data).then(() => navigate('/admin/dashboard', { replace: true }));
+  };
+
   return (
     <div className="relative flex h-full w-full">
       <div className="h-screen w-1/2 bg-black">
@@ -10,7 +25,7 @@ const Home = () => {
             <p className="text-2xl">Login</p>
           </div>
           <div className="mt-10">
-            <form>
+            <form onSubmit={handleSubmit(onSubmit)}>
               <div>
                 <label className="mb-2.5 block font-extrabold" htmlFor="email">
                   Email
@@ -19,6 +34,7 @@ const Home = () => {
                     id="email"
                     className="inline-block w-full rounded-full bg-white p-2.5 leading-none text-black placeholder-indigo-900 shadow placeholder:opacity-30"
                     placeholder="mail@user.com"
+                    {...register('username', { required: true })}
                   />
                 </label>
               </div>
@@ -29,17 +45,18 @@ const Home = () => {
                     type="password"
                     id="password"
                     className="inline-block w-full rounded-full bg-white p-2.5 leading-none text-black placeholder-indigo-900 shadow"
+                    {...register('password', { required: true })}
                   />
                 </label>
               </div>
-              <div className="mt-4 flex w-full flex-col justify-between sm:flex-row">
+              {/* <div className="mt-4 flex w-full flex-col justify-between sm:flex-row">
                 <div>
                   <Link className="text-sm hover:text-gray-200" to="admin">
                     {' '}
                     Forgot password
                   </Link>
                 </div>
-              </div>
+              </div> */}
               <div className="my-10">
                 <button className="w-full rounded-full bg-orange-600 p-5 hover:bg-orange-800">Login</button>
               </div>
