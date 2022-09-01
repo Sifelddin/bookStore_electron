@@ -14,7 +14,12 @@ const Home = () => {
   } = useForm<FormInputs>();
 
   const onSubmit = (data: FormInputs) => {
-    postData('post', '/api/login', undefined, data).then(() => navigate('/admin/dashboard', { replace: true }));
+    postData('post', '/api/login', undefined, data)
+      .then((res) => {
+        localStorage.setItem('token', res.data.token);
+        navigate('/admin/dashboard', { replace: true });
+      })
+      .catch((e) => console.log(e));
   };
 
   return (
@@ -49,14 +54,6 @@ const Home = () => {
                   />
                 </label>
               </div>
-              {/* <div className="mt-4 flex w-full flex-col justify-between sm:flex-row">
-                <div>
-                  <Link className="text-sm hover:text-gray-200" to="admin">
-                    {' '}
-                    Forgot password
-                  </Link>
-                </div>
-              </div> */}
               <div className="my-10">
                 <button className="w-full rounded-full bg-orange-600 p-5 hover:bg-orange-800">Login</button>
               </div>

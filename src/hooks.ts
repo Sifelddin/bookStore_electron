@@ -11,9 +11,10 @@ export const baseUrl = import.meta.env.DEV
   : <string>import.meta.env.VITE_BASE_URL_PROD;
 
 export const fetchData = async (url: string, callback: (value: any) => void) => {
+  const token = localStorage.getItem('token');
   const res = await axios.get(url, {
     baseURL: baseUrl,
-    headers: { Accept: 'application/json' }
+    headers: { Authorization: `Bearer ${token}` }
   });
   try {
     callback({ loading: false, data: res.data });

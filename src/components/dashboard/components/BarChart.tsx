@@ -6,6 +6,7 @@ import { fetchData } from '../../../hooks';
 import { ContentList } from '../../interfaces';
 import { months as labels, years } from '../staticData';
 import setData from '../helpers';
+import { useAuth } from '../../../contexts/ConfirmContext';
 
 const BarChart = () => {
   ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);

@@ -21,12 +21,12 @@ const ConfirmContext = ({ children }: { children: React.ReactNode }) => {
   const [confirmed, setConfirmed] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
-  useEffect(() => {
-    fetchData('/api/me', setAuthUser)
-      .then((res) => console.log(res))
-      .catch((e) => console.log(e));
-  }, []);
-  console.log(authUser);
+  // useEffect(() => {
+  //   fetchData('/api/me', setAuthUser)
+  //     .then((res) => console.log(res))
+  //     .catch((e) => console.log(e));
+  // }, []);
+  // console.log(authUser);
 
   const confirmation = useMemo(() => {
     return { confirmed, setConfirmed };
