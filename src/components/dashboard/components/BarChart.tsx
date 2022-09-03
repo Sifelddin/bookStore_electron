@@ -6,7 +6,6 @@ import { fetchData } from '../../../hooks';
 import { ContentList } from '../../interfaces';
 import { months as labels, years } from '../staticData';
 import setData from '../helpers';
-import { useAuth } from '../../../contexts/ConfirmContext';
 
 const BarChart = () => {
   ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
@@ -14,7 +13,7 @@ const BarChart = () => {
   const [orderDate, setOrderDate] = useState(new Date().getFullYear());
 
   useEffect(() => {
-    fetchData(`/api/orders/all?page=1&orderDate=${orderDate}&exists%5BpaymentDate%5D=true`, setOrders);
+    fetchData(`/api/v2/orders/all?page=1&orderDate=${orderDate}&exists%5BpaymentDate%5D=true`, setOrders);
   }, [orderDate]);
   const { loading, data: ordersData } = orders;
 

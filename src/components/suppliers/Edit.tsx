@@ -16,7 +16,7 @@ const EditSupplier = () => {
       const stateData = state as Supplier;
       setSupplier({ loading: false, data: stateData });
     } else {
-      fetchData(`/api/suppliers/${id}`, setSupplier);
+      fetchData(`/api/v2/suppliers/${id}`, setSupplier);
     }
   }, [state]);
   const { loading, data } = supplier;

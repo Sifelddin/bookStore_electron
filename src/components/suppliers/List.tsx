@@ -11,7 +11,7 @@ import Pagination from '../UI/Pagination';
 import Title from '../UI/Title';
 
 const Suppliers = () => {
-  const [url, setUrl] = useState('/api/suppliers');
+  const [url, setUrl] = useState('/api/v2/suppliers');
   const [suppliers, setSuppliers] = useState<ContentList>({ loading: true, data: undefined });
   const [supplier, setSupplier] = useState<string | null>(null);
   const { confirmed, setConfirmed } = useConfirmation();
