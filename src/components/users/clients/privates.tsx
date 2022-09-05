@@ -6,7 +6,7 @@ const Privates = () => {
   return (
     <>
       <Title>List of Privates</Title>
-      <ListUsers endPoint="/api/users?private=true" status="private" />
+      <ListUsers endPoint="/api/v2/users?private=true" status="private" />
     </>
   );
 };

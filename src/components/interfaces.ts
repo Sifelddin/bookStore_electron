@@ -139,6 +139,7 @@ export interface FormInputs {
   Coef: string;
   username: string;
   password: string;
+  credentials: string;
 }
 
 export interface FormComponentProps {

@@ -6,7 +6,7 @@ const Profs = () => {
   return (
     <>
       <Title>List of Professionals</Title>
-      <ListUsers endPoint="/api/users?private=false" status="professional" />
+      <ListUsers endPoint="/api/v2/users?private=false" status="professional" />
     </>
   );
 };

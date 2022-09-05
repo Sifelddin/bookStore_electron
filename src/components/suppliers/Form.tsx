@@ -27,7 +27,7 @@ const SupplierForm = ({ supplier, method, action }: SpecificFormComponentProps) 
 
   const onSubmit = async (data: FormInputs) => {
     try {
-      await postData(method, supplier ? supplier['@id'] : `/api/suppliers`, undefined, data);
+      await postData(method, supplier ? supplier['@id'] : `/api/v2/suppliers`, undefined, data);
       navigate('/admin/suppliers', { replace: true });
     } catch (e: any) {
       console.log(e);

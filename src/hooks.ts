@@ -26,14 +26,14 @@ export const fetchData = async (url: string, callback: (value: any) => void) => 
 
 // postData function used for the posting data operations : post,delete,put
 export const postData = async (method: string, url: string, headers?: AxiosRequestHeaders, data?: object) => {
-  return axios({ method, url, baseURL: baseUrl, headers, data });
-  // .then((res) => (callback ? callback(res) : console.log(res)))
-  // .catch((err) => (callback ? callback(err.response as AxiosResponse) : console.log(err)));
+  const token = localStorage.getItem('token');
+  return axios({ method, url, baseURL: baseUrl, headers: { Authorization: `Bearer ${token}` }, data });
 };
 
 export const inputFormData = (data: FormInputs) => {
   const formData = new FormData();
   const arr = Object.keys(data) as (keyof FormInputs)[];
+
   arr.map((field) => {
     if (field === 'imageFile') {
       if (data[field][0]) {
@@ -42,8 +42,9 @@ export const inputFormData = (data: FormInputs) => {
     } else if (field === 'published') {
       formData.append(field, data[field].toString());
     } else {
-      formData.append(field, data[field]);
+      formData.append(field, data[field]?.toString() || '');
     }
+
     return formData;
   });
   return formData;

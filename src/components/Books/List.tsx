@@ -12,7 +12,7 @@ import Title from '../UI/Title';
 const ListBooks = () => {
   const [url, setUrl] = useState('/api/books');
   const [books, setBooks] = useState<ContentList>({ loading: true, data: undefined });
-  const [book, setBook] = useState<string | null>(null);
+  const [bookId, setBookId] = useState<number | null>(null);
   const deleteMethode = 'delete';
 
   const { confirmed, setConfirmed } = useConfirmation();
@@ -23,13 +23,13 @@ const ListBooks = () => {
   }, [url]);
 
   useEffect(() => {
-    if (book && confirmed) {
+    if (bookId && confirmed) {
       setConfirmed?.(false);
-      postData(deleteMethode, book)
+      postData(deleteMethode, `/api/v2/books/${bookId}`)
         .then(() => fetchData(url, setBooks))
         .catch((e) => console.log(e));
     }
-  }, [book, confirmed]);
+  }, [bookId, confirmed]);
 
   const { loading, data } = books;
   if (loading) {
@@ -76,7 +76,7 @@ const ListBooks = () => {
                         <button
                           onClick={() => {
                             setShowModal?.(true);
-                            setBook(booK['@id']);
+                            setBookId(booK.id);
                           }}
                           className="text-red-500 hover:text-red-700 cursor:pointer"
                         >

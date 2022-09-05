@@ -10,7 +10,7 @@ const EditCategories = () => {
   const [category, setCategory] = useState<CategoryFetch>({ loading: true, data: undefined });
 
   useEffect(() => {
-    fetchData(`/api/categories/${id}`, setCategory);
+    fetchData(`/api/v2/categories/${id}`, setCategory);
   }, []);
 
   const { loading, data } = category;

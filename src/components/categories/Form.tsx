@@ -32,13 +32,15 @@ const CategoryForm = ({ category, action }: FormComponentProps) => {
 
   const onSubmit = async (data: FormInputs) => {
     try {
-      const res = await postData(
+      await postData(
         'post',
-        category ? `${category['@id']}/image` : '/api/categories',
-        { 'Content-Type': 'multipart/form-data' },
+        category ? `/api/v2/categories/${category.id}/image` : '/api/v2/categories',
+        {
+          'Content-Type': 'multipart/form-data'
+        },
         inputFormData(data)
       );
-      console.log(res);
+
       navigate('/admin/categories', { replace: true });
     } catch (e: any) {
       console.log(e);

@@ -13,7 +13,7 @@ import Title from '../UI/Title';
 const ListCategories = () => {
   const [url, setUrl] = useState('/api/v2/categories');
   const [categories, setCategories] = useState<ContentList>({ loading: true, data: undefined });
-  const [category, setCategory] = useState<string | null>(null);
+  const [categoryId, setCategoryId] = useState<number | null>(null);
   const deleteMethode = 'delete';
 
   const { confirmed, setConfirmed } = useConfirmation();
@@ -24,11 +24,11 @@ const ListCategories = () => {
   }, [url]);
 
   useEffect(() => {
-    if (category && confirmed) {
-      postData(deleteMethode, category).then(() => fetchData(url, setCategories));
+    if (categoryId && confirmed) {
+      postData(deleteMethode, `/api/v2/categories/${categoryId}`).then(() => fetchData(url, setCategories));
       setConfirmed?.(false);
     }
-  }, [category, confirmed]);
+  }, [categoryId, confirmed]);
 
   const { loading, data } = categories;
 
@@ -74,7 +74,7 @@ const ListCategories = () => {
                         <button
                           onClick={() => {
                             setShowModal?.(true);
-                            setCategory(cat['@id']);
+                            setCategoryId(cat.id);
                           }}
                           className="text-red-500 hover:text-red-700 cursor:pointer"
                         >

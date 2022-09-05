@@ -4,6 +4,10 @@ module.exports = {
     extend: {
       transitionProperty: {
         height: 'height'
+      },
+      backgroundImage: {
+        'hero-pattern':
+          'linear-gradient(115deg, rgba(15, 15, 60, 0.9), rgba(40, 40, 80, 0.8)), url(../src/assets/books.jpg)'
       }
     }
   },

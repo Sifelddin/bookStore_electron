@@ -18,7 +18,7 @@ const BookForm = ({ action, book }: FormComponentProps) => {
   const navigate = useNavigate();
   useEffect(() => {
     fetchData('https://localhost:8000/api/v2/categories/all?exists%5BcatParent%5D=true', setCategories);
-    fetchData('https://localhost:8000/api/suppliers', setSuppliers);
+    fetchData('https://localhost:8000/api/v2/suppliers', setSuppliers);
   }, []);
 
   const {
@@ -34,7 +34,7 @@ const BookForm = ({ action, book }: FormComponentProps) => {
   const onSubmit = (data: FormInputs) => {
     postData(
       'post',
-      book ? `${book['@id']}/image` : '/api/books',
+      book ? `/api/v2/books/${book.id}/image` : '/api/v2/books',
       { 'Content-Type': 'multipart/form-data' },
       inputFormData(data)
     )

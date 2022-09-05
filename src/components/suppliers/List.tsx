@@ -30,6 +30,7 @@ const Suppliers = () => {
   }, [supplier, confirmed]);
 
   const { loading, data } = suppliers;
+  console.log(data);
 
   if (loading) {
     return <Spinner />;
