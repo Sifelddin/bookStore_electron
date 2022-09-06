@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useConfirmation, useModal } from '../../contexts/ConfirmContext';
 import { fetchData, postData } from '../../hooks';
 import LinkSpan from '../UI/LinkSpan';
@@ -16,10 +16,12 @@ const Suppliers = () => {
   const [supplier, setSupplier] = useState<string | null>(null);
   const { confirmed, setConfirmed } = useConfirmation();
   const { setShowModal } = useModal();
-
+  const navigate = useNavigate();
   const deleteMethode = 'delete';
   useEffect(() => {
-    fetchData(url, setSuppliers);
+    fetchData(url, setSuppliers).catch((e) =>
+      e.response.data.code === 401 ? navigate('/', { replace: true }) : console.log(e)
+    );
   }, [url]);
 
   useEffect(() => {
@@ -30,7 +32,6 @@ const Suppliers = () => {
   }, [supplier, confirmed]);
 
   const { loading, data } = suppliers;
-  console.log(data);
 
   if (loading) {
     return <Spinner />;

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
+import { useNavigate } from 'react-router-dom';
 import Spinner from '../../UI/Spinner';
 import { fetchData } from '../../../hooks';
 import { ContentList } from '../../interfaces';
@@ -11,9 +12,11 @@ const BarChart = () => {
   ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
   const [orders, setOrders] = useState<ContentList>({ loading: true, data: undefined });
   const [orderDate, setOrderDate] = useState(new Date().getFullYear());
-
+  const navigate = useNavigate();
   useEffect(() => {
-    fetchData(`/api/v2/orders/all?page=1&orderDate=${orderDate}&exists%5BpaymentDate%5D=true`, setOrders);
+    fetchData(`/api/v2/orders/all?page=1&orderDate=${orderDate}&exists%5BpaymentDate%5D=true`, setOrders).catch((e) =>
+      e.response.data.code === 401 ? navigate('/', { replace: true }) : console.log(e)
+    );
   }, [orderDate]);
   const { loading, data: ordersData } = orders;
 

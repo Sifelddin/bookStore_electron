@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { fetchData, postData, baseUrl } from '../../hooks';
 import ListFrame from '../UI/ListFrame';
 import Spinner from '../UI/Spinner';
@@ -15,12 +15,14 @@ const ListCategories = () => {
   const [categories, setCategories] = useState<ContentList>({ loading: true, data: undefined });
   const [categoryId, setCategoryId] = useState<number | null>(null);
   const deleteMethode = 'delete';
-
+  const navigate = useNavigate();
   const { confirmed, setConfirmed } = useConfirmation();
   const { setShowModal } = useModal();
 
   useEffect(() => {
-    fetchData(url, setCategories);
+    fetchData(url, setCategories).catch((e) =>
+      e.response.data.code === 401 ? navigate('/', { replace: true }) : console.log(e)
+    );
   }, [url]);
 
   useEffect(() => {

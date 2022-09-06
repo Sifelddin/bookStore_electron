@@ -16,7 +16,10 @@ const CategoryForm = ({ category, action }: FormComponentProps) => {
   const { setShowModal } = useModal();
 
   useEffect(() => {
-    fetchData('https://localhost:8000/api/v2/categories/all?page=1&exists%5BcatParent%5D=false', setCategoriesParent);
+    fetchData(
+      'https://localhost:8000/api/v2/categories/all?page=1&exists%5BcatParent%5D=false',
+      setCategoriesParent
+    ).catch((e) => (e.response.data.code === 401 ? navigate('/', { replace: true }) : console.log(e)));
   }, []);
 
   const {

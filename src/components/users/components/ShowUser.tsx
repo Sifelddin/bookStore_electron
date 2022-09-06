@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation, useParams } from 'react-router-dom';
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { fetchData } from '../../../hooks';
 import { User, UserFetch } from '../../interfaces';
 import LinkSpan from '../../UI/LinkSpan';
@@ -10,7 +10,7 @@ import Tr from './UI/Tr';
 const ShowUser = () => {
   const [user, setUser] = useState<UserFetch>({ loading: true, data: undefined });
   const [isEditValid, setIsValid] = useState(false);
-
+  const navigate = useNavigate();
   const { id } = useParams();
   const { state } = useLocation();
 
@@ -19,7 +19,9 @@ const ShowUser = () => {
       const stateData = state as User;
       setUser({ loading: false, data: stateData });
     } else {
-      fetchData(`api/users/${id}`, setUser);
+      fetchData(`api/v2/users/${id}`, setUser).catch((e) =>
+        e.response.data.code === 401 ? navigate('/', { replace: true }) : console.log(e)
+      );
       setIsValid(false);
     }
   }, [state, isEditValid]);

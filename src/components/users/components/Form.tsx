@@ -25,10 +25,8 @@ const Form = ({ user, setIsValid }: Props) => {
   } = useForm<FormInputs>();
 
   const onSubmit = (data: FormInputs) => {
-    console.log(data);
-
     if (user) {
-      postData('patch', `${user['@id']}/status`, { 'Content-Type': 'application/merge-patch+json' }, statusData(data))
+      postData('put', `${user['@id']}/status`, undefined, statusData(data))
         .then(() => setIsValid(true))
         .catch((e) => {
           console.log(e);

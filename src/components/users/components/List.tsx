@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { fetchData } from '../../../hooks';
 import { ContentList } from '../../interfaces';
 import LinkSpan from '../../UI/LinkSpan';
@@ -9,11 +9,14 @@ import Spinner from '../../UI/Spinner';
 import Th, { Td } from '../../UI/Th';
 
 const ListUsers = ({ endPoint, status }: { endPoint: string; status: string }) => {
+  const navigate = useNavigate();
   const [url, setUrl] = useState(endPoint);
   const [users, setUsers] = useState<ContentList>({ loading: true, data: undefined });
 
   useEffect(() => {
-    fetchData(url, setUsers);
+    fetchData(url, setUsers).catch((e) =>
+      e.response.data.code === 401 ? navigate('/', { replace: true }) : console.log(e)
+    );
   }, []);
 
   const { loading, data } = users;

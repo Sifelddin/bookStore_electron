@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useModal, useConfirmation } from '../../contexts/ConfirmContext';
 import { baseUrl, fetchData, postData } from '../../hooks';
 import ListFrame from '../UI/ListFrame';
@@ -10,6 +10,7 @@ import Pagination from '../UI/Pagination';
 import Title from '../UI/Title';
 
 const ListBooks = () => {
+  const navigate = useNavigate();
   const [url, setUrl] = useState('/api/books');
   const [books, setBooks] = useState<ContentList>({ loading: true, data: undefined });
   const [bookId, setBookId] = useState<number | null>(null);
@@ -19,7 +20,9 @@ const ListBooks = () => {
   const { setShowModal } = useModal();
 
   useEffect(() => {
-    fetchData(url, setBooks);
+    fetchData(url, setBooks).catch((e) =>
+      e.response.data.code === 401 ? navigate('/', { replace: true }) : console.log(e)
+    );
   }, [url]);
 
   useEffect(() => {

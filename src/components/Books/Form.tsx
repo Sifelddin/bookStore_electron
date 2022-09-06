@@ -14,11 +14,14 @@ const BookForm = ({ action, book }: FormComponentProps) => {
   const [categories, setCategories] = useState<ContentList>({ loading: true, data: undefined });
   const [suppliers, setSuppliers] = useState<ContentList>({ loading: true, data: undefined });
   const { setShowModal } = useModal();
-
   const navigate = useNavigate();
   useEffect(() => {
-    fetchData('https://localhost:8000/api/v2/categories/all?exists%5BcatParent%5D=true', setCategories);
-    fetchData('https://localhost:8000/api/v2/suppliers', setSuppliers);
+    fetchData('https://localhost:8000/api/v2/categories/all?exists%5BcatParent%5D=true', setCategories).catch((e) =>
+      e.response.data.code === 401 ? navigate('/', { replace: true }) : console.log(e)
+    );
+    fetchData('https://localhost:8000/api/v2/suppliers', setSuppliers).catch((e) =>
+      e.response.data.code === 401 ? navigate('/', { replace: true }) : console.log(e)
+    );
   }, []);
 
   const {

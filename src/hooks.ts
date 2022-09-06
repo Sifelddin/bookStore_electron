@@ -12,16 +12,12 @@ export const baseUrl = import.meta.env.DEV
 
 export const fetchData = async (url: string, callback: (value: any) => void) => {
   const token = localStorage.getItem('token');
-  const res = await axios.get(url, {
-    baseURL: baseUrl,
-    headers: { Authorization: `Bearer ${token}` }
-  });
-  try {
-    callback({ loading: false, data: res.data });
-  } catch (err) {
-    console.log(err);
-  }
-  return res;
+  return axios
+    .get(url, {
+      baseURL: baseUrl,
+      headers: { Authorization: `Bearer ${token}` }
+    })
+    .then((res) => callback({ loading: false, data: res.data }));
 };
 
 // postData function used for the posting data operations : post,delete,put

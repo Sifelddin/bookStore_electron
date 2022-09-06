@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { fetchData } from '../../../hooks';
 import Spinner from '../../UI/Spinner';
 import Tr from '../components/UI/Tr';
@@ -6,7 +7,8 @@ import { OrderFetch } from '../../interfaces';
 import OrderForm from './OrderForm';
 import { finalTotal, total, totalTVA } from '../helpers';
 
-const OrderDetailts = ({ orderId, isPrivate }: { orderId: string; isPrivate: boolean | undefined }) => {
+const OrderDetailts = ({ orderId, isPrivate }: { orderId: number; isPrivate: boolean | undefined }) => {
+  const navigate = useNavigate();
   const [orderDetailes, setOrderDetailes] = useState<OrderFetch>({
     loading: true,
     data: undefined
@@ -18,7 +20,9 @@ const OrderDetailts = ({ orderId, isPrivate }: { orderId: string; isPrivate: boo
   useEffect(() => {
     setOrderDetailes({ loading: false, data: undefined });
     if (orderId) {
-      fetchData(orderId, setOrderDetailes);
+      fetchData(`/api/v2/orders/${orderId}`, setOrderDetailes).catch((e) =>
+        e.response.data.code === 401 ? navigate('/', { replace: true }) : console.log(e)
+      );
     }
   }, [orderId, submited]);
 

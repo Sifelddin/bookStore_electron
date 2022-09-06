@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { fetchData } from '../../../hooks';
 import Spinner from '../../UI/Spinner';
 import { UserFetch } from '../../interfaces';
@@ -9,11 +9,13 @@ import Title from '../../UI/Title';
 
 const Orders = () => {
   const [client, setClient] = useState<UserFetch>({ loading: true, data: undefined });
-  const [orderId, setOrderId] = useState<string | null>('');
-
+  const [orderId, setOrderId] = useState<number | null>(null);
+  const navigate = useNavigate();
   const { id } = useParams();
   useEffect(() => {
-    fetchData(`api/users/${id}`, setClient);
+    fetchData(`api/v2/users/${id}`, setClient).catch((e) =>
+      e.response.data.code === 401 ? navigate('/', { replace: true }) : console.log(e)
+    );
   }, []);
 
   const { loading, data } = client;
@@ -60,7 +62,7 @@ const Orders = () => {
                     {order.paymentDate ? order.paymentDate : 'Not Paid'}
                   </td>
                   <td className="text-blue-500 cursor-pointer p-1">
-                    <button onClick={() => setOrderId(order['@id'])}> Details</button>
+                    <button onClick={() => setOrderId(order.id)}> Details</button>
                   </td>
                 </tr>
               );
