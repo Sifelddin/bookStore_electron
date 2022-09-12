@@ -28,24 +28,38 @@ ReactDOM.render(
         <Route index element={<Home />} />
         <Route path="admin" element={<App />}>
           <Route path="dashboard" element={<Wrapper />} />
-          <Route path="suppliers" element={<Suppliers />} />
-          <Route path="suppliers/new" element={<NewSupplier />} />
-          <Route path="suppliers/:id" element={<EditSupplier />} />
-          <Route path="categories" element={<ListCategories />} />
-          <Route path="categories/:id" element={<EditCategories />} />
-          <Route path="categories/new" element={<NewCategory />} />
-          <Route path="books" element={<ListBooks />} />
-          <Route path="books/new" element={<NewBook />} />
-          <Route path="books/:slug/:id" element={<ShowBook />} />
-          <Route path="books/:slug/:id/edit" element={<EditBook />} />
-          <Route path="users/privates" element={<Privates />} />
-          <Route path="users/professionals" element={<Profs />} />
-          <Route path="users/employees" element={<Employees />} />
-          <Route path="users/privates/:id/orders" element={<Orders />} />
-          <Route path="users/professionals/:id/orders" element={<Orders />} />
-          <Route path="users/employees/:id/edit" element={<ShowUser />} />
-          <Route path="users/professionals/:id/edit" element={<ShowUser />} />
-          <Route path="users/privates/:id/edit" element={<ShowUser />} />
+          <Route path="suppliers">
+            <Route index element={<Suppliers />} />
+            <Route path="new" element={<NewSupplier />} />
+            <Route path=":id" element={<EditSupplier />} />
+          </Route>
+          <Route path="categories">
+            <Route index element={<ListCategories />} />
+            <Route path=":id" element={<EditCategories />} />
+            <Route path="new" element={<NewCategory />} />
+          </Route>
+          <Route path="books">
+            <Route index element={<ListBooks />} />
+            <Route path="new" element={<NewBook />} />
+            <Route path=":slug/:id" element={<ShowBook />} />
+            <Route path=":slug/:id/edit" element={<EditBook />} />
+          </Route>
+          <Route path="users">
+            <Route path="privates">
+              <Route index element={<Privates />} />
+              <Route path=":id/orders" element={<Orders />} />
+              <Route path=":id/edit" element={<ShowUser />} />
+            </Route>
+            <Route path="professionals">
+              <Route index element={<Profs />} />
+              <Route path=":id/orders" element={<Orders />} />
+              <Route path=":id/edit" element={<ShowUser />} />
+            </Route>
+            <Route path="employees">
+              <Route index element={<Employees />} />
+              <Route path=":id/edit" element={<ShowUser />} />
+            </Route>
+          </Route>
         </Route>
       </Routes>
     </HashRouter>

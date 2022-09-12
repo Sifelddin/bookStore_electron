@@ -46,10 +46,10 @@ const Orders = () => {
         <table className="pb-2 w-full p-3 shadow-md">
           <thead className="bg-orange-50 shadow-sm">
             <tr>
-              <Th>order number</Th>
+              <Th>Order number</Th>
               <Th>Order Date</Th>
               <Th>Payement date</Th>
-              <Th>actions</Th>
+              <Th>Actions</Th>
             </tr>
           </thead>
           <tbody className="w-full">

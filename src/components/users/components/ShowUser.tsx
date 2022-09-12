@@ -27,23 +27,22 @@ const ShowUser = () => {
   }, [state, isEditValid]);
 
   const { loading, data } = user;
-  let toListLink = '';
+  let usersList = '';
 
   if (loading) {
     return <Spinner />;
   }
 
-  // switch the link path in order to back to list
-
+  // switch the link labelle according the category of the users
   switch (data?.private) {
     case undefined:
-      toListLink = '../users/employees';
+      usersList = 'Employees List';
       break;
     case false:
-      toListLink = '../users/professionals';
+      usersList = 'Professionals List';
       break;
     default:
-      toListLink = '../users/privates';
+      usersList = 'Privates List';
   }
 
   return (
@@ -78,10 +77,8 @@ const ShowUser = () => {
           </div>
         </div>
         <div className="flex justify-around items-center mt-10">
-          <Link to={toListLink}>
-            <LinkSpan link="users/employees">
-              {data?.private === false || data?.private === true ? 'clients list' : 'employees list'}
-            </LinkSpan>
+          <Link to=".." replace>
+            <LinkSpan link="users/employees">{usersList}</LinkSpan>
           </Link>
         </div>
       </div>

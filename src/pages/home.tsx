@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { FormInputs } from '../components/interfaces';
@@ -6,7 +6,12 @@ import ErrorSpan from '../components/UI/ErrorSpan';
 import { postData } from '../hooks';
 
 const Home = () => {
+  const token = localStorage.getItem('token');
   const navigate = useNavigate();
+  useEffect(() => {
+    if (token) navigate('/admin/dashboard');
+  }, []);
+
   const {
     register,
     handleSubmit,

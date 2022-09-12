@@ -6,7 +6,7 @@ import { FormInputs } from './components/interfaces';
 //   return <string>import.meta.env.VITE_BASE_URL_PROD;
 // })();
 
-export const baseUrl = import.meta.env.DEV
+export const baseUrl = import.meta.env.PROD
   ? <string>import.meta.env.VITE_BASE_URL_DEV
   : <string>import.meta.env.VITE_BASE_URL_PROD;
 

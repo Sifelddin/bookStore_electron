@@ -24,6 +24,7 @@ const OrderDetailts = ({ orderId, isPrivate }: { orderId: number; isPrivate: boo
         e.response.data.code === 401 ? navigate('/', { replace: true }) : console.log(e)
       );
     }
+    if (submited) setSubmited(false);
   }, [orderId, submited]);
 
   const { loading, data } = orderDetailes;

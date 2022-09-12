@@ -23,15 +23,16 @@ const OrderForm = ({ order, editPayDate, editDiscount, setSubmited }: Props) => 
   } = useForm<FormInputs>();
   const { setShowModal } = useModal();
   const today = new Date().toISOString().slice(0, 10);
-  setSubmited(false);
   function onSubmit(data: FormInputs) {
     const formDate = data;
     if (!editPayDate && data.paymentDate) {
       delete formDate.paymentDate;
     }
-    postData('put', order ? order['@id'] : '', undefined, formDate).then(() => {
-      setSubmited(true);
-    });
+    postData('put', order ? `/api/v2/orders/${order.id}` : '', undefined, formDate)
+      .then(() => {
+        setSubmited(true);
+      })
+      .catch((e) => console.log(e));
   }
 
   const show = (e?: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
