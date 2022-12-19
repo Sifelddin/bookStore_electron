@@ -10,7 +10,6 @@ const EditBook = () => {
   const [book, setBook] = useState<BookFetch>({ loading: true, data: undefined });
 
   const { state } = useLocation();
-  console.log(state);
 
   useEffect(() => {
     if (state) {

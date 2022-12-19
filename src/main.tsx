@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import { HashRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Suppliers from './components/suppliers/List';
 import App from './pages/App';
 import Home from './pages/home';
@@ -23,7 +23,7 @@ import Wrapper from './components/dashboard/Wrapper';
 
 ReactDOM.render(
   <React.StrictMode>
-    <HashRouter>
+    <BrowserRouter>
       <Routes>
         <Route index element={<Home />} />
         <Route path="admin" element={<App />}>
@@ -62,7 +62,7 @@ ReactDOM.render(
           </Route>
         </Route>
       </Routes>
-    </HashRouter>
+    </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root')
 );

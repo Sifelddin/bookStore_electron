@@ -24,7 +24,7 @@ const ShowBook = () => {
 
   useEffect(() => {
     if (data && confirmed) {
-      postData('delete', data['@id']).then(() => location('../books'));
+      postData('delete', data['@id']).then(() => location('../'));
       setConfirmed?.(false);
     }
   }, [data, confirmed]);
@@ -72,7 +72,7 @@ const ShowBook = () => {
         </div>
       )}
       <div className="flex justify-around items-center mt-4 p-4">
-        <Link to="../books">
+        <Link to="../">
           <Button color="gray"> back to list </Button>
         </Link>
         <Link to="./edit" state={data}>

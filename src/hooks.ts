@@ -6,7 +6,7 @@ import { FormInputs } from './components/interfaces';
 //   return <string>import.meta.env.VITE_BASE_URL_PROD;
 // })();
 
-export const baseUrl = import.meta.env.PROD
+export const baseUrl = import.meta.env.DEV
   ? <string>import.meta.env.VITE_BASE_URL_DEV
   : <string>import.meta.env.VITE_BASE_URL_PROD;
 
@@ -17,7 +17,12 @@ export const fetchData = async (url: string, callback: (value: any) => void) => 
       baseURL: baseUrl,
       headers: { Authorization: `Bearer ${token}` }
     })
-    .then((res) => callback({ loading: false, data: res.data }));
+    .then((res) => callback({ loading: false, data: res.data }))
+    .catch((e) => {
+      if (e.response.data.code === 401 || e.response.data.code === 403) {
+        localStorage.removeItem('token');
+      }
+    });
 };
 
 // postData function used for the posting data operations : post,delete,put
