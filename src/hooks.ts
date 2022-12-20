@@ -19,9 +19,12 @@ export const fetchData = async (url: string, callback: (value: any) => void) => 
     })
     .then((res) => callback({ loading: false, data: res.data }))
     .catch((e) => {
-      if (e.response.data.code === 401 || e.response.data.code === 403) {
+      if (e.response.data.code === 401 || e.response.status === 403) {
         localStorage.removeItem('token');
       }
+      console.log('====================================');
+      console.log(e);
+      console.log('====================================');
     });
 };
 

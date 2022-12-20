@@ -1,5 +1,4 @@
-import React, { createContext, useContext, useState, useMemo, useEffect } from 'react';
-import { fetchData } from '../hooks';
+import React, { createContext, useContext, useState, useMemo } from 'react';
 
 interface providerProps {
   confirmed?: boolean;
